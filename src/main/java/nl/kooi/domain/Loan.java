@@ -11,7 +11,9 @@ public class Loan {
     private Periodicity periodicity;
     private Timing timing;
     private BigDecimal annualInterestRate;
+    private BigDecimal annualEffectiveDiscountRate;
     private BigDecimal periodicInterestRate;
+
 
     public Loan(BigDecimal initialLoan,
                 BigDecimal annualInterestPercentage,
@@ -24,12 +26,17 @@ public class Loan {
         this.timing = timing;
         this.annualInterestRate = annualInterestPercentage.divide(new BigDecimal(100));
         this.periodicInterestRate = determinePeriodicInterestFraction(annualInterestPercentage);
+        this.annualEffectiveDiscountRate = determineAnnualEffectiveDiscountRate(annualInterestPercentage);
 
     }
 
     private BigDecimal determinePeriodicInterestFraction(BigDecimal annualInterestFraction) {
 
-        return (BigDecimal.ONE.add(annualInterestFraction).pow(1/ getPeriodicity().getDivisor())).subtract(BigDecimal.ONE);
+        return (BigDecimal.ONE.add(annualInterestFraction).pow(1 / getPeriodicity().getDivisor())).subtract(BigDecimal.ONE);
+    }
+
+    private BigDecimal determineAnnualEffectiveDiscountRate(BigDecimal annualInterestFraction) {
+        return annualInterestFraction.divide(BigDecimal.ONE.add(annualInterestFraction));
     }
 
     public BigDecimal getInitialLoan() {
