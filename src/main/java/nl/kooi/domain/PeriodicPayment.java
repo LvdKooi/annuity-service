@@ -1,6 +1,5 @@
 package nl.kooi.domain;
 
-import nl.kooi.dto.LoanDto;
 import nl.kooi.dto.PeriodicPaymentDto;
 
 import java.math.BigDecimal;
@@ -10,24 +9,25 @@ public class PeriodicPayment {
     private Integer period;
     private BigDecimal interestAmount;
     private BigDecimal repaymentAmount;
-    private LoanDto loan;
+    private Loan loan;
 
-    public PeriodicPayment(LoanDto loan, Integer period) {
+    public PeriodicPayment(Loan loan, Integer period) {
         this.period = period;
         this.loan = loan;
         setTotalPayment();
     }
 
-    private void determineInterestAndRepayment() {
+//    TODO: implement me!
+    private void determineInterestAndRepaymentOfPeriod() {
 
 
     }
 
+    //TODO: refactor me!
     private void setTotalPayment() {
         if (totalPayment == null) {
-            BigDecimal interest = loan.interestPercentage.divide(new BigDecimal(100));
-            BigDecimal cashValue = loan.initialLoan.divide((BigDecimal.ONE.divide(interest)));
-            BigDecimal discountRate = interest.divide(interest.add(BigDecimal.ONE));
+            BigDecimal cashValue = loan.getInitialLoan().divide((BigDecimal.ONE.divide(loan.getAnnualInterestRate())));
+            BigDecimal discountRate = loan.getAnnualInterestRate().divide(loan.getAnnualInterestRate().add(BigDecimal.ONE));
             totalPayment = cashValue.divide(discountRate);
         }
     }

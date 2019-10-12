@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Data
 public class LoanDto implements Serializable {
     public BigDecimal initialLoan;
-    public BigDecimal interestPercentage;
+    public BigDecimal annualInterestPercentage;
     public Periodicity periodicity;
     public Timing timing;
     }
