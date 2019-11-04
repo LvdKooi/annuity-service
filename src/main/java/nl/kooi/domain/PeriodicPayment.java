@@ -5,7 +5,7 @@ import nl.kooi.dto.PeriodicPaymentDto;
 import java.math.BigDecimal;
 
 public class PeriodicPayment {
-    private static BigDecimal totalPayment;
+    private BigDecimal totalPayment;
     private Integer period;
     private BigDecimal interestAmount;
     private BigDecimal repaymentAmount;
@@ -14,22 +14,22 @@ public class PeriodicPayment {
     public PeriodicPayment(Loan loan, Integer period) {
         this.period = period;
         this.loan = loan;
-        setTotalPayment();
+        setTotalPeriodicPayment();
     }
 
 //    TODO: implement me!
-    private void determineInterestAndRepaymentOfPeriod() {
+    private void determineInterestAndRepaymentOfPeriod(int periodNumber) {
+
+
 
 
     }
 
     //TODO: refactor me!
-    private void setTotalPayment() {
-        if (totalPayment == null) {
+    private void setTotalPeriodicPayment() {
             BigDecimal cashValue = loan.getInitialLoan().divide((BigDecimal.ONE.divide(loan.getAnnualInterestRate())));
             BigDecimal discountRate = loan.getAnnualInterestRate().divide(loan.getAnnualInterestRate().add(BigDecimal.ONE));
             totalPayment = cashValue.divide(discountRate);
-        }
     }
 
     public PeriodicPaymentDto toDto() {

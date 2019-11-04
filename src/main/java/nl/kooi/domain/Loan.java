@@ -4,21 +4,29 @@ import nl.kooi.dto.Periodicity;
 import nl.kooi.dto.Timing;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Period;
 
 public class Loan {
     private BigDecimal initialLoan;
     private BigDecimal annualInterestPercentage;
     private Periodicity periodicity;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private Period loanPeriod;
     private Timing timing;
     private BigDecimal annualInterestRate;
     private BigDecimal annualEffectiveDiscountRate;
     private BigDecimal periodicInterestRate;
+    private int periods;
 
 
     public Loan(BigDecimal initialLoan,
                 BigDecimal annualInterestPercentage,
                 Periodicity periodicity,
-                Timing timing) {
+                Timing timing,
+                LocalDate startdate,
+                Period loanPeriod) {
 
         this.initialLoan = initialLoan;
         this.annualInterestPercentage = annualInterestPercentage;
@@ -27,7 +35,10 @@ public class Loan {
         this.annualInterestRate = annualInterestPercentage.divide(new BigDecimal(100));
         this.periodicInterestRate = determinePeriodicInterestFraction(annualInterestPercentage);
         this.annualEffectiveDiscountRate = determineAnnualEffectiveDiscountRate(annualInterestPercentage);
-
+        this.startDate = startdate;
+        this.loanPeriod= loanPeriod;
+        this.endDate = startdate.plus(loanPeriod);
+        this.periods = periodToPeriods(loanPeriod,periodicity);
     }
 
     private BigDecimal determinePeriodicInterestFraction(BigDecimal annualInterestFraction) {
@@ -61,5 +72,20 @@ public class Loan {
 
     public BigDecimal getPeriodicInterestRate() {
         return periodicInterestRate;
+    }
+
+    private static int periodToPeriods(Period loanPeriod, Periodicity periodicity ) {
+        switch (periodicity) {
+            case MONTHLY:
+                return loanPeriod.getMonths();
+            case QUARTERLY:
+                return loanPeriod.getMonths() / 4;
+            case SEMI_ANNUALY:
+                return loanPeriod.getYears() * 2;
+            case ANNUALY:
+                return loanPeriod.getYears();
+        }
+
+        throw new IllegalArgumentException("Loan contains invalid loanPeriod.");
     }
 }
