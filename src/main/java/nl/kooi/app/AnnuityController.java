@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
  * Created by Laurens van der Kooi on 10/10/19.
@@ -26,7 +25,7 @@ public class AnnuityController {
         LoanDto loanDto = new LoanDto();
 
         loanDto.initialLoan = new BigDecimal(loan);
-        loanDto.interestPercentage = new BigDecimal(interest);
+        loanDto.annualInterestPercentage = new BigDecimal(interest);
         loanDto.periodicity = Periodicity.valueOf(periodicity);
 
 
