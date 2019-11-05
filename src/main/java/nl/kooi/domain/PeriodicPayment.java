@@ -4,49 +4,65 @@ import nl.kooi.dto.PeriodicPaymentDto;
 import nl.kooi.dto.Timing;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.Period;
 
 public class PeriodicPayment {
-    private BigDecimal totalPayment;
-    private Integer period;
-    private BigDecimal interestAmount;
-    private BigDecimal repaymentAmount;
-    private Loan loan;
-    private int numberOfPayments;
-    private BigDecimal annualInterestRate;
-    private BigDecimal annualEffectiveDiscountRate;
-    private BigDecimal periodicInterestRate;
+    private static BigDecimal totalPayment;
+    private static int periodNumber;
+    private static BigDecimal interestAmount;
+    private static BigDecimal repaymentAmount;
+    private static Loan loan;
+    private static int numberOfPayments;
+    private static BigDecimal annualInterestRate;
+    private static BigDecimal annualEffectiveDiscountRate;
+    private static BigDecimal periodicInterestRate;
+    private static LocalDate paymentDate;
 
-    public PeriodicPayment(Loan loan, Integer period) {
-        this.period = period;
-        this.loan = loan;
-        this.numberOfPayments = periodToNumberOfPayments(loan);
-        this.annualInterestRate = loan.getAnnualInterestPercentage().divide(new BigDecimal(100));
-        this.periodicInterestRate = determinePeriodicInterestFraction(annualInterestRate);
-        this.annualEffectiveDiscountRate = determineAnnualEffectiveDiscountRate(annualInterestRate);
+
+    private PeriodicPayment(Loan loan) {
+        PeriodicPayment.loan = loan;
+        numberOfPayments = periodToNumberOfPayments(loan);
+        annualInterestRate = loan.getAnnualInterestPercentage().divide(new BigDecimal(100));
+        periodicInterestRate = determinePeriodicInterestFraction(annualInterestRate);
+        annualEffectiveDiscountRate = determineAnnualEffectiveDiscountRate(annualInterestRate);
         setTotalPeriodicPayment();
     }
 
-    public BigDecimal getAnnualInterestRate() {
-        return annualInterestRate;
-    }
+    public static PeriodicPayment of(Loan loan, int period) {
+        PeriodicPayment periodicPayment = new PeriodicPayment(loan);
 
-    public BigDecimal getPeriodicInterestRate() {
-        return periodicInterestRate;
+        if (period < 0 || period > numberOfPayments) {
+            throw new IllegalArgumentException("Invalid period, period must be between 0 and " + numberOfPayments);
+        }
+
+        periodNumber = period;
+        determineInterestAndRepaymentOfPeriod();
+
+        return periodicPayment;
     }
 
     public PeriodicPaymentDto toDto() {
         PeriodicPaymentDto dto = new PeriodicPaymentDto() {
         };
-        dto.period = period;
+        dto.period = periodNumber;
         dto.interestAmount = interestAmount;
         dto.repaymentAmount = repaymentAmount;
         return dto;
     }
 
-    //    TODO: implement me!
-    private void determineInterestAndRepaymentOfPeriod(int periodNumber) {
+    private static void determineInterestAndRepaymentOfPeriod() {
+        BigDecimal residualDebt = BigDecimal.ZERO;
 
+        for(int i = 1 ; i <= periodNumber; i++){
+            if(i ==1) {
+                interestAmount = loan.getTiming() == Timing.DUE ? loan.getInitialLoan().multiply(annualInterestRate) : BigDecimal.ZERO;
+                repaymentAmount = BigDecimal.ZERO.compareTo(interestAmount) == 0 ? totalPayment : totalPayment.subtract(interestAmount);
+                residualDebt = loan.getInitialLoan().subtract(repaymentAmount);
+            }
+            interestAmount = residualDebt.multiply(annualInterestRate);
+            repaymentAmount = totalPayment.subtract(interestAmount);
+        }
     }
 
     private void setTotalPeriodicPayment() {
