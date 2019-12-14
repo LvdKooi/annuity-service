@@ -11,4 +11,5 @@ public class PeriodicPaymentDto implements Serializable {
     public BigDecimal totalPayment;
     public BigDecimal interestAmount;
     public BigDecimal repaymentAmount;
+
 }

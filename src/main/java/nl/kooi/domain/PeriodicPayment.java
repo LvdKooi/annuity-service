@@ -4,8 +4,10 @@ import nl.kooi.dto.PeriodicPaymentDto;
 import nl.kooi.dto.Timing;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.Period;
+
 
 public class PeriodicPayment {
     private static BigDecimal totalPayment;
@@ -23,7 +25,7 @@ public class PeriodicPayment {
     private PeriodicPayment(Loan loan) {
         PeriodicPayment.loan = loan;
         numberOfPayments = periodToNumberOfPayments(loan);
-        annualInterestRate = loan.getAnnualInterestPercentage().divide(new BigDecimal(100));
+        annualInterestRate = loan.getAnnualInterestPercentage().divide(new BigDecimal(100),10,RoundingMode.HALF_UP);
         periodicInterestRate = determinePeriodicInterestFraction(annualInterestRate);
         annualEffectiveDiscountRate = determineAnnualEffectiveDiscountRate(annualInterestRate);
         setTotalPeriodicPayment();
@@ -54,28 +56,33 @@ public class PeriodicPayment {
     private static void determineInterestAndRepaymentOfPeriod() {
         BigDecimal residualDebt = BigDecimal.ZERO;
 
-        for(int i = 1 ; i <= periodNumber; i++){
-            if(i ==1) {
-                interestAmount = loan.getTiming() == Timing.DUE ? loan.getInitialLoan().multiply(annualInterestRate) : BigDecimal.ZERO;
+        for (int i = 1; i <= periodNumber; i++) {
+
+//            the difference between due and immediate payment are expressed at the first payment
+            if (i == 1) {
+                interestAmount = loan.getTiming() == Timing.DUE ? loan.getInitialLoan().multiply(periodicInterestRate) : BigDecimal.ZERO;
                 repaymentAmount = BigDecimal.ZERO.compareTo(interestAmount) == 0 ? totalPayment : totalPayment.subtract(interestAmount);
                 residualDebt = loan.getInitialLoan().subtract(repaymentAmount);
+            } else {
+                interestAmount = residualDebt.multiply(periodicInterestRate);
+                repaymentAmount = totalPayment.subtract(interestAmount);
+                residualDebt = residualDebt.subtract(repaymentAmount);
+
             }
-            interestAmount = residualDebt.multiply(annualInterestRate);
-            repaymentAmount = totalPayment.subtract(interestAmount);
         }
     }
 
     private void setTotalPeriodicPayment() {
-        totalPayment = loan.getInitialLoan().divide(determineAnnuity(loan.getTiming()));
+        totalPayment = loan.getInitialLoan().divide(determineAnnuity(loan.getTiming()), 10, RoundingMode.HALF_UP);
     }
 
     private static int periodToNumberOfPayments(Loan loan) {
         Period loanPeriod = loan.getLoanPeriod();
         switch (loan.getPeriodicity()) {
             case MONTHLY:
-                return loanPeriod.getMonths();
+                return (int) loanPeriod.toTotalMonths();
             case QUARTERLY:
-                return loanPeriod.getMonths() / 4;
+                return (int) loanPeriod.toTotalMonths() / 4;
             case SEMI_ANNUALY:
                 return loanPeriod.getYears() * 2;
             case ANNUALY:
@@ -87,17 +94,30 @@ public class PeriodicPayment {
 
     //    i
     private BigDecimal determinePeriodicInterestFraction(BigDecimal annualInterestFraction) {
-        return (BigDecimal.ONE.add(annualInterestFraction).pow(1 / loan.getPeriodicity().getDivisor())).subtract(BigDecimal.ONE);
+        double periodInterestPlusOne = Math.pow((BigDecimal.ONE.add(annualInterestFraction)).setScale(10,RoundingMode.HALF_UP).doubleValue(),
+                1 / (double) loan.getPeriodicity().getDivisor());
+        return BigDecimal.valueOf(periodInterestPlusOne -1);
     }
 
     //    d
     private BigDecimal determineAnnualEffectiveDiscountRate(BigDecimal annualInterestFraction) {
-        return annualInterestFraction.divide(BigDecimal.ONE.add(annualInterestFraction));
+        return periodicInterestRate.divide(BigDecimal.ONE.add(periodicInterestRate), 10, RoundingMode.HALF_UP);
     }
 
     private BigDecimal determineAnnuity(Timing timing) {
-        BigDecimal divisor = timing == Timing.IMMEDIATE ? periodicInterestRate : annualEffectiveDiscountRate;
-        return BigDecimal.ONE.subtract(BigDecimal.ONE.divide(periodicInterestRate.add(BigDecimal.ONE).pow(numberOfPayments))).divide(divisor);
+        BigDecimal divisor = timing == Timing.IMMEDIATE ? annualEffectiveDiscountRate: periodicInterestRate;
+        BigDecimal denominator  = BigDecimal.ONE.subtract(BigDecimal.ONE.divide((periodicInterestRate.add(BigDecimal.ONE)).pow(numberOfPayments), 10, RoundingMode.HALF_UP));
+        return denominator.divide(divisor,10, RoundingMode.HALF_UP);
+    }
+
+    public PeriodicPaymentDto toDto(PeriodicPayment periodicPayment) {
+        PeriodicPaymentDto dto = new PeriodicPaymentDto();
+        dto.period = periodNumber;
+        dto.totalPayment = totalPayment;
+        dto.interestAmount = interestAmount;
+        dto.repaymentAmount = repaymentAmount;
+
+        return dto;
     }
 
 }

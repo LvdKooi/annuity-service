@@ -1,7 +1,9 @@
 package nl.kooi.app;
 
 import lombok.extern.slf4j.Slf4j;
+import nl.kooi.domain.PeriodicPayment;
 import nl.kooi.dto.LoanDto;
+import nl.kooi.dto.PeriodicPaymentDto;
 import nl.kooi.dto.Periodicity;
 import nl.kooi.dto.RepaymentScheduleDto;
 import org.springframework.web.bind.annotation.*;
@@ -29,10 +31,13 @@ public class AnnuityController {
         loanDto.periodicity = Periodicity.valueOf(periodicity);
 
 
-
-
         return new RepaymentScheduleDto();
 
+    }
+
+    @PutMapping(path =  "/payment", produces = "application/json")
+    public PeriodicPaymentDto PaymentDto(@RequestBody LoanDto loanDto, @RequestParam int period){
+        return PeriodicPayment.of(loanDto.toDomain(), period).toDto();
     }
 
 }
