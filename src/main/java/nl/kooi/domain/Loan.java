@@ -18,7 +18,7 @@ public class Loan {
     private Timing timing;
 
 
-    public Loan(BigDecimal initialLoan,
+    private Loan(BigDecimal initialLoan,
                 BigDecimal annualInterestPercentage,
                 Periodicity periodicity,
                 Timing timing,
@@ -31,7 +31,7 @@ public class Loan {
         this.timing = timing;
         this.startDate = startdate;
         this.endDate = enddate.plusDays(1);
-        this.loanPeriod = Period.between(startdate,endDate);
+        this.loanPeriod = Period.between(startdate, endDate);
 
     }
 
@@ -55,7 +55,7 @@ public class Loan {
         return loanPeriod;
     }
 
-    public LoanDto toDto(){
+    public LoanDto toDto() {
         LoanDto dto = new LoanDto();
 
         dto.annualInterestPercentage = this.annualInterestPercentage;
@@ -64,6 +64,57 @@ public class Loan {
         dto.timing = this.timing;
 
         return dto;
+    }
+
+    public static class Builder {
+        private BigDecimal initialLoan;
+        private BigDecimal annualInterestPercentage;
+        private Periodicity periodicity;
+        private Timing timing;
+        private LocalDate startdate;
+        private LocalDate enddate;
+
+
+        public Builder() {
+
+        }
+
+        public Builder setInitialLoan(BigDecimal initialLoan){
+            this.initialLoan = initialLoan;
+            return this;
+
+        }
+
+
+        public Builder setAnnualInterestPercentage(BigDecimal annualInterestPercentage) {
+            this.annualInterestPercentage = annualInterestPercentage;
+            return this;
+        }
+
+        public Builder setPeriodicity(Periodicity periodicity) {
+            this.periodicity = periodicity;
+            return this;
+        }
+
+        public Builder setTiming(Timing timing) {
+            this.timing = timing;
+            return this;
+        }
+
+        public Builder setStartdate(LocalDate startdate) {
+            this.startdate = startdate;
+            return this;
+        }
+
+        public Builder setEnddate(LocalDate enddate) {
+            this.enddate = enddate;
+            return this;
+        }
+
+        public  Loan build(){
+            return  new Loan(initialLoan,annualInterestPercentage,periodicity,timing,startdate,enddate);
+
+        }
     }
 
 }

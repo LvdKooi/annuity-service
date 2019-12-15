@@ -17,7 +17,14 @@ public class LoanDto implements Serializable {
     public Timing timing;
 
     public Loan toDomain(){
-        return new Loan(initialLoan,annualInterestPercentage,periodicity,timing,startDate, endDate);
+        Loan.Builder loanBuilder = new Loan.Builder();
+        return  loanBuilder.setInitialLoan(initialLoan)
+                        .setAnnualInterestPercentage(annualInterestPercentage)
+                        .setPeriodicity(periodicity)
+                        .setStartdate(startDate)
+                        .setEnddate(endDate)
+                        .setTiming(timing)
+                        .build();
 
     }
 

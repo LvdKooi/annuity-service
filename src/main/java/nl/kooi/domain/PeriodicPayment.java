@@ -27,7 +27,7 @@ public class PeriodicPayment {
         this.loan = loan;
         numberOfPayments = periodToNumberOfPayments(loan.getLoanPeriod(), loan.getPeriodicity());
         annualInterestRate = loan.getAnnualInterestPercentage().divide(new BigDecimal(100), 10, RoundingMode.HALF_UP);
-        periodicInterestRate = determinePeriodicInterestFraction(annualInterestRate, loan.getPeriodicity());
+        periodicInterestRate = determinePeriodicInterestFraction(getAnnualInterestRate(), loan.getPeriodicity());
         periodNumber = period;
         setTotalPeriodicPayment();
         determineInterestAndRepaymentOfPeriod();
@@ -48,7 +48,7 @@ public class PeriodicPayment {
             case MONTHLY:
                 return (int) loanPeriod.toTotalMonths();
             case QUARTERLY:
-                return (int) loanPeriod.toTotalMonths() / 4;
+                return (int) loanPeriod.toTotalMonths() / 3;
             case SEMI_ANNUALY:
                 return loanPeriod.getYears() * 2;
             case ANNUALY:
@@ -61,35 +61,66 @@ public class PeriodicPayment {
     public PeriodicPaymentDto toDto() {
         PeriodicPaymentDto dto = new PeriodicPaymentDto() {
         };
-        dto.period = periodNumber;
-        dto.totalPayment = totalPayment;
-        dto.interestAmount = interestAmount;
-        dto.repaymentAmount = repaymentAmount;
+        dto.period = getPeriodNumber();
+        dto.totalPayment = getTotalPayment();
+        dto.interestAmount = getInterestAmount();
+        dto.repaymentAmount = getRepaymentAmount();
         return dto;
     }
 
     private void determineInterestAndRepaymentOfPeriod() {
         BigDecimal residualDebt = BigDecimal.ZERO;
 
-        for (int i = 1; i <= periodNumber; i++) {
+        for (int i = 1; i <= getPeriodNumber(); i++) {
 
 //            the difference between due and immediate payment is expressed at the first payment
             if (i == 1) {
-                interestAmount = loan.getTiming() == Timing.DUE ? loan.getInitialLoan().multiply(periodicInterestRate) : BigDecimal.ZERO;
-                repaymentAmount = BigDecimal.ZERO.compareTo(interestAmount) == 0 ? totalPayment : totalPayment.subtract(interestAmount);
-                residualDebt = loan.getInitialLoan().subtract(repaymentAmount);
+                interestAmount = getLoan().getTiming() == Timing.DUE ? getLoan().getInitialLoan().multiply(getPeriodicInterestRate()) : BigDecimal.ZERO;
+                repaymentAmount = BigDecimal.ZERO.compareTo(getInterestAmount()) == 0 ? getTotalPayment() : getTotalPayment().subtract(getInterestAmount());
+                residualDebt = getLoan().getInitialLoan().subtract(getRepaymentAmount());
             } else {
-                interestAmount = residualDebt.multiply(periodicInterestRate);
-                repaymentAmount = totalPayment.subtract(interestAmount);
-                residualDebt = residualDebt.subtract(repaymentAmount);
+                interestAmount = residualDebt.multiply(getPeriodicInterestRate());
+                repaymentAmount = getTotalPayment().subtract(getInterestAmount());
+                residualDebt = residualDebt.subtract(getRepaymentAmount());
 
             }
         }
     }
 
     private void setTotalPeriodicPayment() {
-        totalPayment = loan.getInitialLoan().divide(determineAnnuity(loan.getTiming(), loan.getPeriodicity(), periodicInterestRate, numberOfPayments), 10, RoundingMode.HALF_UP);
+        totalPayment = getLoan().getInitialLoan().divide(determineAnnuity(getLoan().getTiming(), getLoan().getPeriodicity(), getPeriodicInterestRate(), getNumberOfPayments()), 10, RoundingMode.HALF_UP);
     }
 
+    public BigDecimal getTotalPayment() {
+        return totalPayment;
+    }
+
+    public int getPeriodNumber() {
+        return periodNumber;
+    }
+
+    public BigDecimal getInterestAmount() {
+        return interestAmount;
+    }
+
+    public BigDecimal getRepaymentAmount() {
+        return repaymentAmount;
+    }
+
+    public Loan getLoan() {
+        return loan;
+    }
+
+    public int getNumberOfPayments() {
+        return numberOfPayments;
+    }
+
+    public BigDecimal getAnnualInterestRate() {
+        return annualInterestRate;
+    }
+
+    public BigDecimal getPeriodicInterestRate() {
+        return periodicInterestRate;
+    }
 }
 
