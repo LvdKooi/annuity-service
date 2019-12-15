@@ -18,7 +18,8 @@
         <java.version>1.8</java.version>
         <junit-jupiter-api.version>5.5.0-M1</junit-jupiter-api.version>
         <junit-jupiter-engine.version>5.5.0-M1</junit-jupiter-engine.version>
-        <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>2.20</maven-surefire-plugin.version>
+        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <copy-rename-maven-plugin.version>1.0</copy-rename-maven-plugin.version>
         <swagger.version>2.9.2</swagger.version>
     </properties>
@@ -72,6 +73,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
