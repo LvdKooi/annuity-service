@@ -12,11 +12,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 public class PeriodicPaymentTests {
-
     private Loan.Builder loanBuilder = new Loan.Builder();
     private BigDecimal initionalLoan = BigDecimal.valueOf(197000);
     private BigDecimal annualInterestPercentage = BigDecimal.valueOf(2.69);
-
 
     @Test
     public void testFirstPaymentMonthlyDue() {
@@ -126,6 +124,118 @@ public class PeriodicPaymentTests {
         assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(2373.30));
         assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(15.70));
         assertRepaymentAmountIs(periodicPayment, BigDecimal.valueOf(2357.60));
+
+        assertInterestPlusRepaymentEqualsTotalPayment(periodicPayment);
+    }
+
+    @Test
+    public void testFirstPaymentSemiAnnualyDue() {
+        Loan loan = getLoan(Periodicity.SEMI_ANNUALY, Timing.DUE);
+        PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 1);
+
+        assertThat(periodicPayment.getNumberOfPayments(), is(60));
+
+        assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(4794.10));
+        assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(2632.07));
+        assertRepaymentAmountIs(periodicPayment, BigDecimal.valueOf(2162.03));
+
+        assertInterestPlusRepaymentEqualsTotalPayment(periodicPayment);
+    }
+
+    @Test
+    public void testLastPaymentSemiAnnualyDue() {
+        Loan loan = getLoan(Periodicity.SEMI_ANNUALY, Timing.DUE);
+        PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 60);
+
+        assertThat(periodicPayment.getNumberOfPayments(), is(60));
+
+        assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(4794.10));
+        assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(63.21));
+        assertRepaymentAmountIs(periodicPayment, BigDecimal.valueOf(4730.89));
+
+        assertInterestPlusRepaymentEqualsTotalPayment(periodicPayment);
+    }
+
+    @Test
+    public void testFirstPaymentSemiAnnualyImmediate() {
+        Loan loan = getLoan(Periodicity.SEMI_ANNUALY, Timing.IMMEDIATE);
+        PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 1);
+
+        assertThat(periodicPayment.getNumberOfPayments(), is(60));
+
+        assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(4730.89));
+        assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(0.00));
+        assertRepaymentAmountIs(periodicPayment, BigDecimal.valueOf(4730.89));
+
+        assertInterestPlusRepaymentEqualsTotalPayment(periodicPayment);
+    }
+
+    @Test
+    public void testLastPaymentSemiAnnualyImmediate() {
+        Loan loan = getLoan(Periodicity.SEMI_ANNUALY, Timing.IMMEDIATE);
+        PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 60);
+
+        assertThat(periodicPayment.getNumberOfPayments(), is(60));
+
+        assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(4730.89));
+        assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(62.37));
+        assertRepaymentAmountIs(periodicPayment, BigDecimal.valueOf(4668.52));
+
+        assertInterestPlusRepaymentEqualsTotalPayment(periodicPayment);
+    }
+
+    @Test
+    public void testFirstPaymentAnnualyDue() {
+        Loan loan = getLoan(Periodicity.ANNUALY, Timing.DUE);
+        PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 1);
+
+        assertThat(periodicPayment.getNumberOfPayments(), is(30));
+
+        assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(9652.25));
+        assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(5299.30));
+        assertRepaymentAmountIs(periodicPayment, BigDecimal.valueOf(4352.95));
+
+        assertInterestPlusRepaymentEqualsTotalPayment(periodicPayment);
+    }
+
+    @Test
+    public void testLastPaymentAnnualyDue() {
+        Loan loan = getLoan(Periodicity.ANNUALY, Timing.DUE);
+        PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 30);
+
+        assertThat(periodicPayment.getNumberOfPayments(), is(30));
+
+        assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(9652.25));
+        assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(252.84));
+        assertRepaymentAmountIs(periodicPayment, BigDecimal.valueOf(9399.41));
+
+        assertInterestPlusRepaymentEqualsTotalPayment(periodicPayment);
+    }
+
+    @Test
+    public void testFirstPaymentAnnualyImmediate() {
+        Loan loan = getLoan(Periodicity.ANNUALY, Timing.IMMEDIATE);
+        PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 1);
+
+        assertThat(periodicPayment.getNumberOfPayments(), is(30));
+
+        assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(9399.41));
+        assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(0.00));
+        assertRepaymentAmountIs(periodicPayment, BigDecimal.valueOf(9399.41));
+
+        assertInterestPlusRepaymentEqualsTotalPayment(periodicPayment);
+    }
+
+    @Test
+    public void testLastPaymentAnnualyImmediate() {
+        Loan loan = getLoan(Periodicity.ANNUALY, Timing.IMMEDIATE);
+        PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 30);
+
+        assertThat(periodicPayment.getNumberOfPayments(), is(30));
+
+        assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(9399.41));
+        assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(246.22));
+        assertRepaymentAmountIs(periodicPayment, BigDecimal.valueOf(9153.19));
 
         assertInterestPlusRepaymentEqualsTotalPayment(periodicPayment);
     }
