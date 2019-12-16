@@ -6,15 +6,16 @@ import nl.kooi.dto.Timing;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.time.Period;
 
 import static nl.kooi.utils.ActuarialUtils.determineAnnuity;
 import static nl.kooi.utils.ActuarialUtils.determinePeriodicInterestFraction;
 
-
 public class PeriodicPayment {
     private BigDecimal totalPayment;
     private int periodNumber;
+    private LocalDate date;
     private BigDecimal interestAmount;
     private BigDecimal repaymentAmount;
     private Loan loan;
@@ -22,13 +23,13 @@ public class PeriodicPayment {
     private BigDecimal annualInterestRate;
     private BigDecimal periodicInterestRate;
 
-
     private PeriodicPayment(Loan loan, int period) {
         this.loan = loan;
         numberOfPayments = periodToNumberOfPayments(loan.getLoanPeriod(), loan.getPeriodicity());
         annualInterestRate = loan.getAnnualInterestPercentage().divide(new BigDecimal(100), 10, RoundingMode.HALF_UP);
         periodicInterestRate = determinePeriodicInterestFraction(getAnnualInterestRate(), loan.getPeriodicity());
         periodNumber = period;
+        setDateOfPeriod();
         setTotalPeriodicPayment();
         determineInterestAndRepaymentOfPeriod();
     }
@@ -61,10 +62,11 @@ public class PeriodicPayment {
     public PeriodicPaymentDto toDto() {
         PeriodicPaymentDto dto = new PeriodicPaymentDto() {
         };
-        dto.period = getPeriodNumber();
-        dto.totalPayment = getTotalPayment();
-        dto.interestAmount = getInterestAmount();
-        dto.repaymentAmount = getRepaymentAmount();
+        dto.period = periodNumber;
+        dto.totalPayment = totalPayment;
+        dto.interestAmount = interestAmount;
+        dto.repaymentAmount = repaymentAmount;
+        dto.date = date;
         return dto;
     }
 
@@ -75,9 +77,9 @@ public class PeriodicPayment {
 
 //            the difference between due and immediate payment is expressed at the first payment
             if (i == 1) {
-                interestAmount = getLoan().getTiming() == Timing.DUE ? getLoan().getInitialLoan().multiply(getPeriodicInterestRate()) : BigDecimal.ZERO;
+                interestAmount = loan.getTiming() == Timing.DUE ? getLoan().getInitialLoan().multiply(getPeriodicInterestRate()) : BigDecimal.ZERO;
                 repaymentAmount = BigDecimal.ZERO.compareTo(getInterestAmount()) == 0 ? getTotalPayment() : getTotalPayment().subtract(getInterestAmount());
-                residualDebt = getLoan().getInitialLoan().subtract(getRepaymentAmount());
+                residualDebt = loan.getInitialLoan().subtract(getRepaymentAmount());
             } else {
                 interestAmount = residualDebt.multiply(getPeriodicInterestRate());
                 repaymentAmount = getTotalPayment().subtract(getInterestAmount());
@@ -88,7 +90,14 @@ public class PeriodicPayment {
     }
 
     private void setTotalPeriodicPayment() {
-        totalPayment = getLoan().getInitialLoan().divide(determineAnnuity(getLoan().getTiming(), getLoan().getPeriodicity(), getPeriodicInterestRate(), getNumberOfPayments()), 10, RoundingMode.HALF_UP);
+        totalPayment = loan.getInitialLoan().divide(determineAnnuity(getLoan().getTiming(), getLoan().getPeriodicity(), getPeriodicInterestRate(), getNumberOfPayments()), 10, RoundingMode.HALF_UP);
+    }
+
+    private void setDateOfPeriod() {
+        int monthsBetweenPaymentDates = 12 / loan.getPeriodicity().getDivisor();
+
+        date = loan.getTiming() == Timing.DUE ? loan.getStartDate().withDayOfMonth(1).plusMonths((monthsBetweenPaymentDates * periodNumber)).minusDays(1) : loan.getStartDate().withDayOfMonth(1).plusMonths((periodNumber - 1) * monthsBetweenPaymentDates);
+
     }
 
     public BigDecimal getTotalPayment() {
@@ -97,6 +106,10 @@ public class PeriodicPayment {
 
     public int getPeriodNumber() {
         return periodNumber;
+    }
+
+    public LocalDate getDate() {
+        return date;
     }
 
     public BigDecimal getInterestAmount() {

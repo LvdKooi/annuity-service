@@ -17,13 +17,12 @@ public class Loan {
     private Period loanPeriod;
     private Timing timing;
 
-
     private Loan(BigDecimal initialLoan,
-                BigDecimal annualInterestPercentage,
-                Periodicity periodicity,
-                Timing timing,
-                LocalDate startdate,
-                LocalDate enddate) {
+                 BigDecimal annualInterestPercentage,
+                 Periodicity periodicity,
+                 Timing timing,
+                 LocalDate startdate,
+                 LocalDate enddate) {
 
         this.initialLoan = initialLoan;
         this.annualInterestPercentage = annualInterestPercentage;
@@ -55,6 +54,14 @@ public class Loan {
         return loanPeriod;
     }
 
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
     public LoanDto toDto() {
         LoanDto dto = new LoanDto();
 
@@ -74,17 +81,15 @@ public class Loan {
         private LocalDate startdate;
         private LocalDate enddate;
 
-
         public Builder() {
 
         }
 
-        public Builder setInitialLoan(BigDecimal initialLoan){
+        public Builder setInitialLoan(BigDecimal initialLoan) {
             this.initialLoan = initialLoan;
             return this;
 
         }
-
 
         public Builder setAnnualInterestPercentage(BigDecimal annualInterestPercentage) {
             this.annualInterestPercentage = annualInterestPercentage;
@@ -111,10 +116,13 @@ public class Loan {
             return this;
         }
 
-        public  Loan build(){
-            return  new Loan(initialLoan,annualInterestPercentage,periodicity,timing,startdate,enddate);
-
+        public Loan build() {
+            return new Loan(initialLoan,
+                    annualInterestPercentage,
+                    periodicity,
+                    timing,
+                    startdate,
+                    enddate);
         }
     }
-
 }

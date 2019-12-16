@@ -21,6 +21,7 @@ public class PeriodicPaymentTests {
         Loan loan = getLoan(Periodicity.MONTHLY, Timing.DUE);
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 1);
 
+        assertThat(periodicPayment.getDate(), is(LocalDate.of(2017, 04, 30)));
         assertThat(periodicPayment.getNumberOfPayments(), is(360));
 
         assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(794.60));
@@ -35,6 +36,7 @@ public class PeriodicPaymentTests {
         Loan loan = getLoan(Periodicity.MONTHLY, Timing.DUE);
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 360);
 
+        assertThat(periodicPayment.getDate(), is(LocalDate.of(2047, 03, 31)));
         assertThat(periodicPayment.getNumberOfPayments(), is(360));
 
         assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(794.60));
@@ -50,6 +52,7 @@ public class PeriodicPaymentTests {
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 1);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(360));
+        assertThat(periodicPayment.getDate(), is(LocalDate.of(2017, 04, 01)));
 
         assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(792.85));
         assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(0.00));
@@ -64,6 +67,7 @@ public class PeriodicPaymentTests {
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 360);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(360));
+        assertThat(periodicPayment.getDate(), is(LocalDate.of(2047, 03, 01)));
 
         assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(792.85));
         assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(1.75));
@@ -78,6 +82,7 @@ public class PeriodicPaymentTests {
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 1);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(120));
+        assertThat(periodicPayment.getDate(), is(LocalDate.of(2017, 06, 30)));
 
         assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(2389.10));
         assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(1311.67));
@@ -92,6 +97,7 @@ public class PeriodicPaymentTests {
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 120);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(120));
+        assertThat(periodicPayment.getDate(), is(LocalDate.of(2047, 03, 31)));
 
         assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(2389.10));
         assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(15.80));
@@ -106,6 +112,7 @@ public class PeriodicPaymentTests {
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 1);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(120));
+        assertThat(periodicPayment.getDate(), is(LocalDate.of(2017, 04, 01)));
 
         assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(2373.30));
         assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(0.00));
@@ -120,6 +127,7 @@ public class PeriodicPaymentTests {
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 120);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(120));
+        assertThat(periodicPayment.getDate(), is(LocalDate.of(2047, 01, 01)));
 
         assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(2373.30));
         assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(15.70));
@@ -134,6 +142,7 @@ public class PeriodicPaymentTests {
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 1);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(60));
+        assertThat(periodicPayment.getDate(), is(LocalDate.of(2017, 9, 30)));
 
         assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(4794.10));
         assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(2632.07));
@@ -148,6 +157,7 @@ public class PeriodicPaymentTests {
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 60);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(60));
+        assertThat(periodicPayment.getDate(), is(LocalDate.of(2047, 3, 31)));
 
         assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(4794.10));
         assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(63.21));
@@ -162,6 +172,7 @@ public class PeriodicPaymentTests {
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 1);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(60));
+        assertThat(periodicPayment.getDate(), is(LocalDate.of(2017, 04, 01)));
 
         assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(4730.89));
         assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(0.00));
@@ -176,6 +187,7 @@ public class PeriodicPaymentTests {
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 60);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(60));
+        assertThat(periodicPayment.getDate(), is(LocalDate.of(2046, 10, 01)));
 
         assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(4730.89));
         assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(62.37));
@@ -190,6 +202,7 @@ public class PeriodicPaymentTests {
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 1);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(30));
+        assertThat(periodicPayment.getDate(), is(LocalDate.of(2018, 03, 31)));
 
         assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(9652.25));
         assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(5299.30));
@@ -204,6 +217,7 @@ public class PeriodicPaymentTests {
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 30);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(30));
+        assertThat(periodicPayment.getDate(), is(LocalDate.of(2047, 03, 31)));
 
         assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(9652.25));
         assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(252.84));
@@ -218,6 +232,7 @@ public class PeriodicPaymentTests {
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 1);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(30));
+        assertThat(periodicPayment.getDate(), is(LocalDate.of(2017, 04, 01)));
 
         assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(9399.41));
         assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(0.00));
@@ -232,6 +247,7 @@ public class PeriodicPaymentTests {
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 30);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(30));
+        assertThat(periodicPayment.getDate(), is(LocalDate.of(2046, 04, 01)));
 
         assertTotalPaymentIs(periodicPayment, BigDecimal.valueOf(9399.41));
         assertInterestAmountIs(periodicPayment, BigDecimal.valueOf(246.22));
