@@ -5,7 +5,7 @@ public enum Timing {
     IMMEDIATE("postnumerando"), DUE("prenumerando");
     private String dutchTerm;
 
-    private Timing(String dutchTerm){
+    Timing(String dutchTerm) {
         this.dutchTerm = dutchTerm;
 
     }
