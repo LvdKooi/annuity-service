@@ -3,14 +3,14 @@ package nl.kooi.domain;
 import nl.kooi.dto.PeriodicPaymentDto;
 import nl.kooi.dto.Periodicity;
 import nl.kooi.dto.Timing;
+import nl.kooi.utils.ActuarialUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.Period;
 
-import static nl.kooi.utils.ActuarialUtils.determineAnnuity;
-import static nl.kooi.utils.ActuarialUtils.determinePeriodicInterestFraction;
+import static nl.kooi.utils.ActuarialUtils.getAnnuity;
 
 public class PeriodicPayment {
     private BigDecimal totalPayment;
@@ -27,7 +27,7 @@ public class PeriodicPayment {
         this.loan = loan;
         numberOfPayments = periodToNumberOfPayments(loan.getLoanPeriod(), loan.getPeriodicity());
         annualInterestRate = loan.getAnnualInterestPercentage().divide(new BigDecimal(100), 10, RoundingMode.HALF_UP);
-        periodicInterestRate = determinePeriodicInterestFraction(getAnnualInterestRate(), loan.getPeriodicity());
+        periodicInterestRate = ActuarialUtils.getPeriodicInterestRate(getAnnualInterestRate(), loan.getPeriodicity());
         periodNumber = period;
         setDateOfPeriod();
         setTotalPeriodicPayment();
@@ -90,7 +90,7 @@ public class PeriodicPayment {
     }
 
     private void setTotalPeriodicPayment() {
-        totalPayment = loan.getInitialLoan().divide(determineAnnuity(getLoan().getTiming(), getLoan().getPeriodicity(), getPeriodicInterestRate(), getNumberOfPayments()), 10, RoundingMode.HALF_UP);
+        totalPayment = loan.getInitialLoan().divide(getAnnuity(getLoan().getTiming(), getPeriodicInterestRate(), getNumberOfPayments()), 10, RoundingMode.HALF_UP);
     }
 
     private void setDateOfPeriod() {
