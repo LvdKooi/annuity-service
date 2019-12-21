@@ -3,8 +3,10 @@ package nl.kooi.domain;
 import nl.kooi.dto.LoanDto;
 import nl.kooi.dto.Periodicity;
 import nl.kooi.dto.Timing;
+import nl.kooi.exception.InvalidDateException;
 
 import java.math.BigDecimal;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -116,6 +118,16 @@ public class Loan {
             return this;
         }
 
+        public Builder setStartdate(String startdate) {
+            this.startdate = dateFromStringConverter(startdate);
+            return this;
+        }
+
+        public Builder setEnddate(String enddate) {
+            this.enddate = dateFromStringConverter(enddate);
+            return this;
+        }
+
         public Loan build() {
             return new Loan(initialLoan,
                     annualInterestPercentage,
@@ -123,6 +135,21 @@ public class Loan {
                     timing,
                     startdate,
                     enddate);
+        }
+
+
+        private LocalDate dateFromStringConverter(String date) {
+
+            try {
+                if (date.length() != 10) {
+                    throw new InvalidDateException("A datestring should contain 10 characters i.e. 2019-01-01.");
+                }
+                return LocalDate.of(Integer.parseInt(date.substring(0, 4)), Integer.parseInt(date.substring(5, 7)), Integer.parseInt(date.substring(8)));
+            }
+            catch(DateTimeException e){
+                throw new InvalidDateException("Invalid date format. A date should look like this: yyyy-mm-dd. For example: 2019-01-01");
+            }
+
         }
     }
 }
