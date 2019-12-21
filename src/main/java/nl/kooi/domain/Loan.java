@@ -31,8 +31,8 @@ public class Loan {
         this.periodicity = periodicity;
         this.timing = timing;
         this.startDate = startdate;
-        this.endDate = enddate.plusDays(1);
-        this.loanPeriod = Period.between(startdate, endDate);
+        this.endDate = enddate;
+        this.loanPeriod = Period.between(startdate, endDate.plusDays(1));
 
     }
 
@@ -71,6 +71,8 @@ public class Loan {
         dto.initialLoan = this.initialLoan;
         dto.periodicity = this.periodicity;
         dto.timing = this.timing;
+        dto.startDate = this.startDate;
+        dto.endDate = this.endDate;
 
         return dto;
     }

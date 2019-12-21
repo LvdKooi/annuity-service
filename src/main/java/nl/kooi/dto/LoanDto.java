@@ -1,5 +1,6 @@
 package nl.kooi.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import nl.kooi.domain.Loan;
 
@@ -12,7 +13,11 @@ public class LoanDto implements Serializable {
     public BigDecimal initialLoan;
     public BigDecimal annualInterestPercentage;
     public Periodicity periodicity;
+
+    @JsonFormat(pattern="yyyy-MM-dd")
     public LocalDate startDate;
+
+    @JsonFormat(pattern="yyyy-MM-dd")
     public LocalDate endDate;
     public Timing timing;
 
