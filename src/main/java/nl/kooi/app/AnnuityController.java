@@ -4,9 +4,9 @@ package nl.kooi.app;
 import lombok.extern.slf4j.Slf4j;
 import nl.kooi.domain.Loan;
 import nl.kooi.domain.RepaymentSchedule;
-import nl.kooi.dto.Periodicity;
 import nl.kooi.dto.RepaymentScheduleDto;
-import nl.kooi.dto.Timing;
+import org.springframework.lang.NonNull;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,18 +21,25 @@ import java.math.BigDecimal;
 
 @RequestMapping(path = "/annuity")
 @RestController
+@Validated
 @Slf4j
 
 public class AnnuityController {
 
+
     @GetMapping(path = "/repaymentschedule", produces = "application/json")
-    public RepaymentScheduleDto getRepaymentSchedule(@RequestParam("loan") String loan, @RequestParam("interest") String interest, @RequestParam("periodicity") String periodicity, @RequestParam("timing") String timing, @RequestParam("startdate") String startdate, @RequestParam("enddate") String enddate) {
+    public RepaymentScheduleDto getRepaymentSchedule(@NonNull @RequestParam("loan") String loan,
+                                                     @NonNull @RequestParam("interest") String interest,
+                                                     @NonNull @RequestParam("periodicity") String periodicity,
+                                                     @NonNull @RequestParam("timing") String timing,
+                                                     @NonNull @RequestParam("startdate") String startdate,
+                                                     @NonNull @RequestParam("enddate") String enddate) {
 
         Loan loanObject = new Loan.Builder()
                 .setInitialLoan(new BigDecimal(loan.trim()))
                 .setAnnualInterestPercentage(new BigDecimal(interest.trim()))
-                .setPeriodicity(Periodicity.valueOf(periodicity))
-                .setTiming(Timing.valueOf(timing))
+                .setPeriodicity(periodicity)
+                .setTiming(timing)
                 .setStartdate(startdate)
                 .setEnddate(enddate)
                 .build();
