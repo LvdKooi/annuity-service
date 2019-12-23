@@ -70,7 +70,11 @@ public class Loan {
         }
 
         if (Period.between(startdate, endDate.plusDays(1)).toTotalMonths() == 0) {
-            throw new LoanException("The period of a loan should be at least 1 month.");
+            throw new LoanException("The loan duration should be at least 1 month.");
+        }
+
+        if (Period.between(startdate, endDate.plusDays(1)).toTotalMonths() % (12 / periodicity.getDivisor()) != 0) {
+            throw new LoanException("The periodicity doesn't match the loan duration (startdate: " + startdate + " , enddate: " + enddate+")");
         }
 
         return Period.between(startdate, endDate.plusDays(1));
