@@ -92,7 +92,7 @@ public class PeriodicPayment {
 
 //            the difference between due and immediate payment is expressed at the first payment
             if (i == 1) {
-                interestAmount = loan.getTiming() == Timing.DUE ? getLoan().getInitialLoan().multiply(getPeriodicInterestRate()) : BigDecimal.ZERO;
+                interestAmount = loan.getTiming() == Timing.IMMEDIATE ? getLoan().getInitialLoan().multiply(getPeriodicInterestRate()) : BigDecimal.ZERO;
                 repaymentAmount = BigDecimal.ZERO.compareTo(getInterestAmount()) == 0 ? getTotalPayment() : getTotalPayment().subtract(getInterestAmount());
                 residualDebt = loan.getInitialLoan().subtract(getRepaymentAmount());
             } else {
@@ -111,7 +111,7 @@ public class PeriodicPayment {
     private void setDateOfPeriod() {
         int monthsBetweenPaymentDates = 12 / loan.getPeriodicity().getDivisor();
 
-        date = loan.getTiming() == Timing.DUE ? loan.getStartDate().withDayOfMonth(1).plusMonths((monthsBetweenPaymentDates * periodNumber)).minusDays(1) : loan.getStartDate().withDayOfMonth(1).plusMonths((periodNumber - 1) * monthsBetweenPaymentDates);
+        date = loan.getTiming() == Timing.IMMEDIATE ? loan.getStartDate().withDayOfMonth(1).plusMonths((monthsBetweenPaymentDates * periodNumber)).minusDays(1) : loan.getStartDate().withDayOfMonth(1).plusMonths((periodNumber - 1) * monthsBetweenPaymentDates);
 
     }
 

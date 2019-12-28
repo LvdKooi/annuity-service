@@ -15,7 +15,7 @@ public class RepaymentScheduleTests {
 
     @Test
     public void testRepaymentScheduleMonthly() {
-        Loan loan = getLoan(Periodicity.MONTHLY, Timing.DUE);
+        Loan loan = getLoan(Periodicity.MONTHLY, Timing.IMMEDIATE);
         RepaymentSchedule repaymentSchedule = new RepaymentSchedule(loan);
         assertThat(repaymentSchedule.getPaymentsList().size(), is(12));
         assertFirstAndLastPeriodicPaymentInSchedule(repaymentSchedule,loan);
@@ -23,7 +23,7 @@ public class RepaymentScheduleTests {
 
     @Test
     public void testRepaymentScheduleQuarterly() {
-        Loan loan = getLoan(Periodicity.QUARTERLY, Timing.DUE);
+        Loan loan = getLoan(Periodicity.QUARTERLY, Timing.IMMEDIATE);
         RepaymentSchedule repaymentSchedule = new RepaymentSchedule(loan);
         assertThat(repaymentSchedule.getPaymentsList().size(), is(4));
         assertFirstAndLastPeriodicPaymentInSchedule(repaymentSchedule,loan);
@@ -31,7 +31,7 @@ public class RepaymentScheduleTests {
 
     @Test
     public void testRepaymentScheduleSemiAnnually() {
-        Loan loan = getLoan(Periodicity.SEMI_ANNUALLY, Timing.DUE);
+        Loan loan = getLoan(Periodicity.SEMI_ANNUALLY, Timing.IMMEDIATE);
         RepaymentSchedule repaymentSchedule = new RepaymentSchedule(loan);
         assertThat(repaymentSchedule.getPaymentsList().size(), is(2));
         assertFirstAndLastPeriodicPaymentInSchedule(repaymentSchedule,loan);
@@ -39,7 +39,7 @@ public class RepaymentScheduleTests {
 
     @Test
     public void testRepaymentScheduleAnnually() {
-        Loan loan = getLoan(Periodicity.ANNUALLY, Timing.DUE);
+        Loan loan = getLoan(Periodicity.ANNUALLY, Timing.IMMEDIATE);
         RepaymentSchedule repaymentSchedule = new RepaymentSchedule(loan);
         assertThat(repaymentSchedule.getPaymentsList().size(), is(1));
         assertFirstAndLastPeriodicPaymentInSchedule(repaymentSchedule,loan);

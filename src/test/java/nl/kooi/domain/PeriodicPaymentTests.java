@@ -16,7 +16,7 @@ public class PeriodicPaymentTests {
 
     @Test
     public void testFirstPaymentMonthlyDue() {
-        Loan loan = getLoan(Periodicity.MONTHLY, Timing.DUE);
+        Loan loan = getLoan(Periodicity.MONTHLY, Timing.IMMEDIATE);
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 1);
 
         assertThat(periodicPayment.getDate(), is(LocalDate.of(2017, 4, 30)));
@@ -31,7 +31,7 @@ public class PeriodicPaymentTests {
 
     @Test
     public void testLastPaymentMonthlyDue() {
-        Loan loan = getLoan(Periodicity.MONTHLY, Timing.DUE);
+        Loan loan = getLoan(Periodicity.MONTHLY, Timing.IMMEDIATE);
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 360);
 
         assertThat(periodicPayment.getDate(), is(LocalDate.of(2047, 3, 31)));
@@ -46,7 +46,7 @@ public class PeriodicPaymentTests {
 
     @Test
     public void testFirstPaymentMonthlyImmediate() {
-        Loan loan = getLoan(Periodicity.MONTHLY, Timing.IMMEDIATE);
+        Loan loan = getLoan(Periodicity.MONTHLY, Timing.DUE);
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 1);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(360));
@@ -61,7 +61,7 @@ public class PeriodicPaymentTests {
 
     @Test
     public void testLastPaymentMonthlyImmediate() {
-        Loan loan = getLoan(Periodicity.MONTHLY, Timing.IMMEDIATE);
+        Loan loan = getLoan(Periodicity.MONTHLY, Timing.DUE);
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 360);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(360));
@@ -76,7 +76,7 @@ public class PeriodicPaymentTests {
 
     @Test
     public void testFirstPaymentQuarterlyDue() {
-        Loan loan = getLoan(Periodicity.QUARTERLY, Timing.DUE);
+        Loan loan = getLoan(Periodicity.QUARTERLY, Timing.IMMEDIATE);
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 1);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(120));
@@ -91,7 +91,7 @@ public class PeriodicPaymentTests {
 
     @Test
     public void testLastPaymentQuarterlyDue() {
-        Loan loan = getLoan(Periodicity.QUARTERLY, Timing.DUE);
+        Loan loan = getLoan(Periodicity.QUARTERLY, Timing.IMMEDIATE);
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 120);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(120));
@@ -106,7 +106,7 @@ public class PeriodicPaymentTests {
 
     @Test
     public void testFirstPaymentQuarterlyImmediate() {
-        Loan loan = getLoan(Periodicity.QUARTERLY, Timing.IMMEDIATE);
+        Loan loan = getLoan(Periodicity.QUARTERLY, Timing.DUE);
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 1);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(120));
@@ -121,7 +121,7 @@ public class PeriodicPaymentTests {
 
     @Test
     public void testLastPaymentQuarterlyImmediate() {
-        Loan loan = getLoan(Periodicity.QUARTERLY, Timing.IMMEDIATE);
+        Loan loan = getLoan(Periodicity.QUARTERLY, Timing.DUE);
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 120);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(120));
@@ -136,7 +136,7 @@ public class PeriodicPaymentTests {
 
     @Test
     public void testFirstPaymentSemiAnnualyDue() {
-        Loan loan = getLoan(Periodicity.SEMI_ANNUALLY, Timing.DUE);
+        Loan loan = getLoan(Periodicity.SEMI_ANNUALLY, Timing.IMMEDIATE);
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 1);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(60));
@@ -151,7 +151,7 @@ public class PeriodicPaymentTests {
 
     @Test
     public void testLastPaymentSemiAnnualyDue() {
-        Loan loan = getLoan(Periodicity.SEMI_ANNUALLY, Timing.DUE);
+        Loan loan = getLoan(Periodicity.SEMI_ANNUALLY, Timing.IMMEDIATE);
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 60);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(60));
@@ -166,7 +166,7 @@ public class PeriodicPaymentTests {
 
     @Test
     public void testFirstPaymentSemiAnnualyImmediate() {
-        Loan loan = getLoan(Periodicity.SEMI_ANNUALLY, Timing.IMMEDIATE);
+        Loan loan = getLoan(Periodicity.SEMI_ANNUALLY, Timing.DUE);
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 1);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(60));
@@ -181,7 +181,7 @@ public class PeriodicPaymentTests {
 
     @Test
     public void testLastPaymentSemiAnnualyImmediate() {
-        Loan loan = getLoan(Periodicity.SEMI_ANNUALLY, Timing.IMMEDIATE);
+        Loan loan = getLoan(Periodicity.SEMI_ANNUALLY, Timing.DUE);
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 60);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(60));
@@ -196,7 +196,7 @@ public class PeriodicPaymentTests {
 
     @Test
     public void testFirstPaymentAnnualyDue() {
-        Loan loan = getLoan(Periodicity.ANNUALLY, Timing.DUE);
+        Loan loan = getLoan(Periodicity.ANNUALLY, Timing.IMMEDIATE);
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 1);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(30));
@@ -211,7 +211,7 @@ public class PeriodicPaymentTests {
 
     @Test
     public void testLastPaymentAnnualyDue() {
-        Loan loan = getLoan(Periodicity.ANNUALLY, Timing.DUE);
+        Loan loan = getLoan(Periodicity.ANNUALLY, Timing.IMMEDIATE);
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 30);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(30));
@@ -226,7 +226,7 @@ public class PeriodicPaymentTests {
 
     @Test
     public void testFirstPaymentAnnualyImmediate() {
-        Loan loan = getLoan(Periodicity.ANNUALLY, Timing.IMMEDIATE);
+        Loan loan = getLoan(Periodicity.ANNUALLY, Timing.DUE);
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 1);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(30));
@@ -241,7 +241,7 @@ public class PeriodicPaymentTests {
 
     @Test
     public void testLastPaymentAnnualyImmediate() {
-        Loan loan = getLoan(Periodicity.ANNUALLY, Timing.IMMEDIATE);
+        Loan loan = getLoan(Periodicity.ANNUALLY, Timing.DUE);
         PeriodicPayment periodicPayment = PeriodicPayment.of(loan, 30);
 
         assertThat(periodicPayment.getNumberOfPayments(), is(30));

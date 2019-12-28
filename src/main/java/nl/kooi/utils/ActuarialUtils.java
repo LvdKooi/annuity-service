@@ -22,7 +22,7 @@ public class ActuarialUtils {
 
     //    an / än
     public static BigDecimal getAnnuity(Timing timing, BigDecimal periodicInterestRate, int numberOfPayments) {
-        BigDecimal divisor = timing == Timing.IMMEDIATE ? getPeriodicEffectiveDiscountRate(periodicInterestRate) : periodicInterestRate;
+        BigDecimal divisor = timing == Timing.DUE ? getPeriodicEffectiveDiscountRate(periodicInterestRate) : periodicInterestRate;
         BigDecimal denominator = BigDecimal.ONE.subtract(BigDecimal.ONE.divide((periodicInterestRate.add(BigDecimal.ONE)).pow(numberOfPayments), 10, RoundingMode.HALF_UP));
         return denominator.divide(divisor, 10, RoundingMode.HALF_UP);
     }
