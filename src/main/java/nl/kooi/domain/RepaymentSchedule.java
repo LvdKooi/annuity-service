@@ -11,10 +11,17 @@ public class RepaymentSchedule {
     private Loan loan;
     private List<PeriodicPayment> paymentsList;
 
-
     public RepaymentSchedule(Loan loan) {
         this.loan = loan;
         setPaymentList(loan);
+    }
+
+    public List<PeriodicPayment> getPaymentsList() {
+        return paymentsList;
+    }
+
+    public Loan getLoan(){
+        return this.loan;
     }
 
     private void setPaymentList(Loan loan) {
