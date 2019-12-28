@@ -1,7 +1,7 @@
 package nl.kooi.domain;
 
 public enum Periodicity {
-    MONTHLY(12), QUARTERLY(4), SEMI_ANNUALY(2), ANNUALY(1);
+    MONTHLY(12), QUARTERLY(4), SEMI_ANNUALLY(2), ANNUALLY(1);
 
     private int divisor;
 
