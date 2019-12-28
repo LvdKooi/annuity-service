@@ -18,6 +18,7 @@ public class RepaymentScheduleTests {
         Loan loan = getLoan(Periodicity.MONTHLY, Timing.DUE);
         RepaymentSchedule repaymentSchedule = new RepaymentSchedule(loan);
         assertThat(repaymentSchedule.getPaymentsList().size(), is(12));
+        assertFirstAndLastPeriodicPaymentInSchedule(repaymentSchedule,loan);
     }
 
     @Test
@@ -25,6 +26,7 @@ public class RepaymentScheduleTests {
         Loan loan = getLoan(Periodicity.QUARTERLY, Timing.DUE);
         RepaymentSchedule repaymentSchedule = new RepaymentSchedule(loan);
         assertThat(repaymentSchedule.getPaymentsList().size(), is(4));
+        assertFirstAndLastPeriodicPaymentInSchedule(repaymentSchedule,loan);
     }
 
     @Test
@@ -32,6 +34,7 @@ public class RepaymentScheduleTests {
         Loan loan = getLoan(Periodicity.SEMI_ANNUALLY, Timing.DUE);
         RepaymentSchedule repaymentSchedule = new RepaymentSchedule(loan);
         assertThat(repaymentSchedule.getPaymentsList().size(), is(2));
+        assertFirstAndLastPeriodicPaymentInSchedule(repaymentSchedule,loan);
     }
 
     @Test
@@ -39,6 +42,7 @@ public class RepaymentScheduleTests {
         Loan loan = getLoan(Periodicity.ANNUALLY, Timing.DUE);
         RepaymentSchedule repaymentSchedule = new RepaymentSchedule(loan);
         assertThat(repaymentSchedule.getPaymentsList().size(), is(1));
+        assertFirstAndLastPeriodicPaymentInSchedule(repaymentSchedule,loan);
     }
 
     private Loan getLoan(Periodicity periodicity, Timing timing) {
@@ -50,6 +54,13 @@ public class RepaymentScheduleTests {
                 .setMonths(12)
                 .setTiming(timing)
                 .build();
+
+    }
+
+    private void assertFirstAndLastPeriodicPaymentInSchedule(RepaymentSchedule repaymentSchedule, Loan loan) {
+        int numberOfPayments = repaymentSchedule.getPaymentsList().get(0).getNumberOfPayments();
+        assertThat("First periodic payment is different than expectation", repaymentSchedule.getPaymentsList().get(0).equals(PeriodicPayment.of(loan, 1)));
+        assertThat("Last periodic payment is different than expectation", repaymentSchedule.getPaymentsList().get(numberOfPayments - 1).equals(PeriodicPayment.of(loan, numberOfPayments)));
 
     }
 

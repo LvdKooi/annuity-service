@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Objects;
 
 import static nl.kooi.utils.ActuarialUtils.getAnnuity;
 
@@ -40,6 +41,22 @@ public class PeriodicPayment {
         }
 
         return new PeriodicPayment(loan, period);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PeriodicPayment that = (PeriodicPayment) o;
+        return periodNumber == that.periodNumber &&
+                Objects.equals(totalPayment, that.totalPayment) &&
+                Objects.equals(interestAmount, that.interestAmount) &&
+                Objects.equals(repaymentAmount, that.repaymentAmount);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(totalPayment, periodNumber, interestAmount, repaymentAmount);
     }
 
     private static int periodToNumberOfPayments(Period loanPeriod, Periodicity periodicity) {
