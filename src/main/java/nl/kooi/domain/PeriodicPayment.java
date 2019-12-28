@@ -1,8 +1,6 @@
 package nl.kooi.domain;
 
 import nl.kooi.dto.PeriodicPaymentDto;
-import nl.kooi.dto.Periodicity;
-import nl.kooi.dto.Timing;
 import nl.kooi.utils.ActuarialUtils;
 
 import java.math.BigDecimal;
@@ -51,9 +49,9 @@ public class PeriodicPayment {
             case QUARTERLY:
                 return (int) loanPeriod.toTotalMonths() / 3;
             case SEMI_ANNUALY:
-                return loanPeriod.getYears() * 2;
+                return (int) loanPeriod.toTotalMonths() / 6;
             case ANNUALY:
-                return loanPeriod.getYears();
+                return (int) loanPeriod.toTotalMonths() / 12;
         }
 
         throw new IllegalArgumentException("Loan contains invalid loanPeriod.");

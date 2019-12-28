@@ -1,7 +1,7 @@
 package nl.kooi.utils;
 
-import nl.kooi.dto.Periodicity;
-import nl.kooi.dto.Timing;
+import nl.kooi.domain.Periodicity;
+import nl.kooi.domain.Timing;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

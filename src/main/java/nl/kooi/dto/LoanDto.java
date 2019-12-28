@@ -3,10 +3,13 @@ package nl.kooi.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import nl.kooi.domain.Loan;
+import nl.kooi.domain.Periodicity;
+import nl.kooi.domain.Timing;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Period;
 
 @Data
 public class LoanDto implements Serializable {
@@ -27,7 +30,7 @@ public class LoanDto implements Serializable {
                         .setAnnualInterestPercentage(annualInterestPercentage)
                         .setPeriodicity(periodicity)
                         .setStartdate(startDate)
-                        .setEnddate(endDate)
+                .setMonths((int) Period.between(startDate, endDate.plusDays(1)).toTotalMonths())
                         .setTiming(timing)
                         .build();
 

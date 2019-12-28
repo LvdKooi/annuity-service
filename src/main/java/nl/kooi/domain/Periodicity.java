@@ -1,4 +1,4 @@
-package nl.kooi.dto;
+package nl.kooi.domain;
 
 public enum Periodicity {
     MONTHLY(12), QUARTERLY(4), SEMI_ANNUALY(2), ANNUALY(1);

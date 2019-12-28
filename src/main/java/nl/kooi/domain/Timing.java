@@ -1,4 +1,4 @@
-package nl.kooi.dto;
+package nl.kooi.domain;
 
 public enum Timing {
 

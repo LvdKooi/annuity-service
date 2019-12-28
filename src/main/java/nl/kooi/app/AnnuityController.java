@@ -33,7 +33,7 @@ public class AnnuityController {
                                                      @NonNull @RequestParam("periodicity") String periodicity,
                                                      @NonNull @RequestParam("timing") String timing,
                                                      @NonNull @RequestParam("startdate") String startdate,
-                                                     @NonNull @RequestParam("enddate") String enddate) {
+                                                     @NonNull @RequestParam("periodofmonths") int months) {
 
         Loan loanObject = new Loan.Builder()
                 .setInitialLoan(new BigDecimal(loan.trim()))
@@ -41,7 +41,7 @@ public class AnnuityController {
                 .setPeriodicity(periodicity)
                 .setTiming(timing)
                 .setStartdate(startdate)
-                .setEnddate(enddate)
+                .setMonths(months)
                 .build();
 
         return new RepaymentSchedule(loanObject).toDto();

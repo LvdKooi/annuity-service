@@ -1,8 +1,6 @@
 package nl.kooi.domain;
 
 import nl.kooi.dto.LoanDto;
-import nl.kooi.dto.Periodicity;
-import nl.kooi.dto.Timing;
 import nl.kooi.exception.InvalidDateException;
 import nl.kooi.exception.LoanException;
 
@@ -25,15 +23,14 @@ public class Loan {
                  Periodicity periodicity,
                  Timing timing,
                  LocalDate startdate,
-                 LocalDate enddate) {
+                 int months) {
 
         this.initialLoan = initialLoan;
         this.annualInterestPercentage = annualInterestPercentage;
         this.periodicity = periodicity;
         this.timing = timing;
         this.startDate = startdate;
-        this.endDate = enddate;
-        this.loanPeriod = setLoanPeriod(startdate, enddate);
+        setLoanPeriodAndEnddate(startdate, months);
     }
 
     public BigDecimal getInitialLoan() {
@@ -64,20 +61,23 @@ public class Loan {
         return endDate;
     }
 
-    private Period setLoanPeriod(LocalDate startdate, LocalDate enddate) {
-        if (enddate.isBefore(startdate)) {
-            throw new LoanException("The enddate of a loan can't be before the startdate.");
+    private void setLoanPeriodAndEnddate(LocalDate startdate, int months) {
+
+        if (months <= 0) {
+            throw new LoanException("The loan period can't be 0 months or less.");
         }
 
-        if (Period.between(startdate, endDate.plusDays(1)).toTotalMonths() == 0) {
-            throw new LoanException("The loan duration should be at least 1 month.");
+        int modulus = months % (12 / periodicity.getDivisor());
+
+        if (modulus != 0) {
+            throw new LoanException("The loan period doesn't match the periodicity. Valid months within the range of your input are: " +
+                    (months - modulus) +
+                    " and " + (months + ((12 / periodicity.getDivisor()) - modulus)));
         }
 
-        if (Period.between(startdate, endDate.plusDays(1)).toTotalMonths() % (12 / periodicity.getDivisor()) != 0) {
-            throw new LoanException("The periodicity doesn't match the loan duration (startdate: " + startdate + " , enddate: " + enddate+")");
-        }
+        endDate = startdate.plusMonths(months).minusDays(1);
+        loanPeriod = Period.ofMonths(months);
 
-        return Period.between(startdate, endDate.plusDays(1));
     }
 
     public LoanDto toDto() {
@@ -99,7 +99,7 @@ public class Loan {
         private Periodicity periodicity;
         private Timing timing;
         private LocalDate startdate;
-        private LocalDate enddate;
+        private int months;
 
         public Builder() {
 
@@ -164,18 +164,13 @@ public class Loan {
             return this;
         }
 
-        public Builder setEnddate(LocalDate enddate) {
-            this.enddate = enddate;
-            return this;
-        }
-
         public Builder setStartdate(String startdate) {
             this.startdate = dateFromStringConverter(startdate);
             return this;
         }
 
-        public Builder setEnddate(String enddate) {
-            this.enddate = dateFromStringConverter(enddate);
+        public Builder setMonths(int months) {
+            this.months = months;
             return this;
         }
 
@@ -185,7 +180,7 @@ public class Loan {
                     periodicity,
                     timing,
                     startdate,
-                    enddate);
+                    months);
         }
 
 
