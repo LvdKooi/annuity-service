@@ -48,9 +48,9 @@ public class PeriodicPayment {
                 return (int) loanPeriod.toTotalMonths();
             case QUARTERLY:
                 return (int) loanPeriod.toTotalMonths() / 3;
-            case SEMI_ANNUALY:
+            case SEMI_ANNUALLY:
                 return (int) loanPeriod.toTotalMonths() / 6;
-            case ANNUALY:
+            case ANNUALLY:
                 return (int) loanPeriod.toTotalMonths() / 12;
         }
 

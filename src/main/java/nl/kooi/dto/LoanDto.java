@@ -17,23 +17,23 @@ public class LoanDto implements Serializable {
     public BigDecimal annualInterestPercentage;
     public Periodicity periodicity;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     public LocalDate startDate;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     public LocalDate endDate;
     public Timing timing;
 
-    public Loan toDomain(){
+    public Loan toDomain() {
         Loan.Builder loanBuilder = new Loan.Builder();
-        return  loanBuilder.setInitialLoan(initialLoan)
-                        .setAnnualInterestPercentage(annualInterestPercentage)
-                        .setPeriodicity(periodicity)
-                        .setStartdate(startDate)
+        return loanBuilder.setInitialLoan(initialLoan)
+                .setAnnualInterestPercentage(annualInterestPercentage)
+                .setPeriodicity(periodicity)
+                .setStartdate(startDate)
                 .setMonths((int) Period.between(startDate, endDate.plusDays(1)).toTotalMonths())
-                        .setTiming(timing)
-                        .build();
+                .setTiming(timing)
+                .build();
 
     }
 
-    }
+}

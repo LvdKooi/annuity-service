@@ -183,7 +183,6 @@ public class Loan {
                     months);
         }
 
-
         private LocalDate dateFromStringConverter(String date) {
 
             try {
