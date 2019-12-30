@@ -3,8 +3,10 @@ package nl.kooi.domain;
 import nl.kooi.dto.LoanDto;
 import nl.kooi.exception.InvalidDateException;
 import nl.kooi.exception.LoanException;
+import nl.kooi.utils.ActuarialUtils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Period;
@@ -13,6 +15,8 @@ import java.util.Objects;
 public class Loan {
     private BigDecimal initialLoan;
     private BigDecimal annualInterestPercentage;
+    private BigDecimal annualInterestRate;
+    private BigDecimal periodicInterestRate;
     private Periodicity periodicity;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -28,6 +32,8 @@ public class Loan {
 
         this.initialLoan = initialLoan;
         this.annualInterestPercentage = annualInterestPercentage;
+        this.annualInterestRate = annualInterestPercentage.divide(new BigDecimal(100), 10, RoundingMode.HALF_UP);
+        this.periodicInterestRate = ActuarialUtils.getPeriodicInterestRate(annualInterestRate, periodicity);
         this.periodicity = periodicity;
         this.timing = timing;
         this.startDate = startdate;
@@ -67,6 +73,14 @@ public class Loan {
 
     public BigDecimal getAnnualInterestPercentage() {
         return annualInterestPercentage;
+    }
+
+    public BigDecimal getAnnualInterestRate(){
+        return annualInterestRate;
+    }
+
+    public BigDecimal getPeriodicInterestRate() {
+        return periodicInterestRate;
     }
 
     public Periodicity getPeriodicity() {
