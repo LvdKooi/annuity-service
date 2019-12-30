@@ -1,6 +1,7 @@
 package nl.kooi.app;
 
 
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import nl.kooi.domain.Loan;
 import nl.kooi.domain.RepaymentSchedule;
@@ -26,14 +27,14 @@ import java.math.BigDecimal;
 
 public class AnnuityController {
 
-
     @GetMapping(path = "/repaymentschedule", produces = "application/json")
+    @ApiOperation("Generates a repayment schedule for an annuity loan.")
     public RepaymentScheduleDto getRepaymentSchedule(@NonNull @RequestParam("loan") String loan,
                                                      @NonNull @RequestParam("interest") String interest,
                                                      @NonNull @RequestParam("periodicity") String periodicity,
                                                      @NonNull @RequestParam("timing") String timing,
                                                      @NonNull @RequestParam("startdate") String startdate,
-                                                     @NonNull @RequestParam("periodofmonths") int months) {
+                                                     @NonNull @RequestParam("loanperiodinmonths") int months) {
 
         Loan loanObject = new Loan.Builder()
                 .setInitialLoan(new BigDecimal(loan.trim()))

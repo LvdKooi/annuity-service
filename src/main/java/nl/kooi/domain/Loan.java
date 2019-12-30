@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Objects;
 
 public class Loan {
     private BigDecimal initialLoan;
@@ -32,6 +33,33 @@ public class Loan {
         this.startDate = startdate;
         setLoanPeriodAndEnddate(startdate, months);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        if (o instanceof Loan) {
+            Loan that = (Loan) o;
+
+            return this.loanPeriod.equals(that.loanPeriod) &&
+                    this.initialLoan.equals(that.initialLoan) &&
+                    this.startDate.isEqual(that.startDate) &&
+                    this.endDate.isEqual(that.endDate) &&
+                    this.annualInterestPercentage.equals(that.annualInterestPercentage) &&
+                    this.timing == that.timing &&
+                    this.periodicity == that.periodicity;
+        }
+
+        return false;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(initialLoan, loanPeriod, annualInterestPercentage);
+    }
+
 
     public BigDecimal getInitialLoan() {
         return initialLoan;
@@ -115,6 +143,10 @@ public class Loan {
 
         }
 
+        public Builder setInitialLoan(Double initialLoan) {
+            return setInitialLoan(BigDecimal.valueOf(initialLoan));
+        }
+
         public Builder setAnnualInterestPercentage(BigDecimal annualInterestPercentage) {
             if (annualInterestPercentage.compareTo(BigDecimal.ZERO) <= 0) {
                 throw new LoanException("The annual interest on a loan can't be equal or smaller than 0.");
@@ -122,6 +154,10 @@ public class Loan {
 
             this.annualInterestPercentage = annualInterestPercentage;
             return this;
+        }
+
+        public Builder setAnnualInterestPercentage(Double annualInterestPercentage) {
+            return setAnnualInterestPercentage(BigDecimal.valueOf(annualInterestPercentage));
         }
 
         public Builder setPeriodicity(Periodicity periodicity) {
