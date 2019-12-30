@@ -59,8 +59,8 @@ public class RepaymentScheduleTests {
 
     private void assertFirstAndLastPeriodicPaymentInSchedule(RepaymentSchedule repaymentSchedule, Loan loan) {
         int numberOfPayments = repaymentSchedule.getPaymentsList().get(0).getNumberOfPayments();
-        assertThat("First periodic payment is different than expectation", repaymentSchedule.getPaymentsList().get(0).equals(PeriodicPayment.of(loan, 1)));
-        assertThat("Last periodic payment is different than expectation", repaymentSchedule.getPaymentsList().get(numberOfPayments - 1).equals(PeriodicPayment.of(loan, numberOfPayments)));
+        assertThat("First periodic payment is different than expectation", repaymentSchedule.getPaymentsList().get(0).equals(LoanStatement.of(loan, 1)));
+        assertThat("Last periodic payment is different than expectation", repaymentSchedule.getPaymentsList().get(numberOfPayments - 1).equals(LoanStatement.of(loan, numberOfPayments)));
 
     }
 

@@ -8,5 +8,5 @@ import java.util.List;
 @Data
 public class RepaymentScheduleDto implements Serializable {
    public LoanDto loan;
-   public List<PeriodicPaymentDto> paymentsList;
+   public List<LoanStatementDto> loanStatements;
 }

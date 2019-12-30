@@ -8,12 +8,13 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
-public class PeriodicPaymentDto implements Serializable {
+public class LoanStatementDto implements Serializable {
     public Integer period;
 
     @JsonFormat(pattern="yyyy-MM-dd")
     public LocalDate date;
-    public BigDecimal totalPayment;
-    public BigDecimal interestAmount;
-    public BigDecimal repaymentAmount;
+    public PaymentDto payment;
+    public BigDecimal balance;
+    public BigDecimal totalInterest;
+
 }
