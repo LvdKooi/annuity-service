@@ -9,15 +9,15 @@ import java.util.stream.Collectors;
 
 public class RepaymentSchedule {
     private Loan loan;
-    private List<LoanStatement> paymentsList;
+    private List<LoanStatement> loanStatements;
 
     public RepaymentSchedule(Loan loan) {
         this.loan = loan;
         setPaymentList(loan);
     }
 
-    public List<LoanStatement> getPaymentsList() {
-        return paymentsList;
+    public List<LoanStatement> getLoanStatements() {
+        return loanStatements;
     }
 
     public Loan getLoan(){
@@ -25,17 +25,17 @@ public class RepaymentSchedule {
     }
 
     private void setPaymentList(Loan loan) {
-        paymentsList = new ArrayList<>();
+        loanStatements = new ArrayList<>();
         int numberOfPayments = LoanStatement.of(loan, 1).getNumberOfPayments();
 
         for (int i = 1; i <= numberOfPayments; i++) {
-            paymentsList.add(LoanStatement.of(loan, i));
+            loanStatements.add(LoanStatement.of(loan, i));
         }
     }
 
     public RepaymentScheduleDto toDto() {
         RepaymentScheduleDto dto = new RepaymentScheduleDto();
-        List<LoanStatementDto> loanStatementDtoList = paymentsList.stream().map(LoanStatement::toDto).collect(Collectors.toList());
+        List<LoanStatementDto> loanStatementDtoList = loanStatements.stream().map(LoanStatement::toDto).collect(Collectors.toList());
 
         dto.loan = loan.toDto();
         dto.loanStatements = loanStatementDtoList;
