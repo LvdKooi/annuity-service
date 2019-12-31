@@ -4,7 +4,9 @@ package nl.kooi.app;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import nl.kooi.domain.Loan;
+import nl.kooi.domain.Periodicity;
 import nl.kooi.domain.RepaymentSchedule;
+import nl.kooi.domain.Timing;
 import nl.kooi.dto.RepaymentScheduleDto;
 import org.springframework.lang.NonNull;
 import org.springframework.validation.annotation.Validated;
@@ -31,10 +33,10 @@ public class AnnuityController {
     @ApiOperation("Generates a repayment schedule for an annuity loan.")
     public RepaymentScheduleDto getRepaymentSchedule(@NonNull @RequestParam("loan") String loan,
                                                      @NonNull @RequestParam("interest") String interest,
-                                                     @NonNull @RequestParam("periodicity") String periodicity,
-                                                     @NonNull @RequestParam("timing") String timing,
-                                                     @NonNull @RequestParam("startdate") String startdate,
-                                                     @NonNull @RequestParam("loanperiodinmonths") int months) {
+                                                     @NonNull @RequestParam("periodicity") Periodicity periodicity,
+                                                     @NonNull @RequestParam("timing") Timing timing,
+                                                     @NonNull @RequestParam("start-date") String startdate,
+                                                     @NonNull @RequestParam("loan-term-in-months") int months) {
 
         Loan loanObject = new Loan.Builder()
                 .setInitialLoan(new BigDecimal(loan.trim()))

@@ -3,6 +3,7 @@ package nl.kooi.domain;
 import nl.kooi.dto.PaymentDto;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 
 public class Payment {
@@ -59,9 +60,9 @@ public class Payment {
     public PaymentDto toDto(){
 
         PaymentDto dto = new PaymentDto();
-        dto.interestAmount = interestAmount;
-        dto.repaymentAmount = repaymentAmount;
-        dto.totalPayment = totalPayment;
+        dto.interestAmount = interestAmount.setScale(5, RoundingMode.HALF_UP);
+        dto.repaymentAmount = repaymentAmount.setScale(5, RoundingMode.HALF_UP);
+        dto.totalPayment = totalPayment.setScale(5, RoundingMode.HALF_UP);
         return dto;
 
     }

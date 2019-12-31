@@ -20,7 +20,7 @@ public class Loan {
     private Periodicity periodicity;
     private LocalDate startDate;
     private LocalDate endDate;
-    private Period loanPeriod;
+    private Period loanTerm;
     private Timing timing;
 
     private Loan(BigDecimal initialLoan,
@@ -48,7 +48,7 @@ public class Loan {
         if (o instanceof Loan) {
             Loan that = (Loan) o;
 
-            return this.loanPeriod.equals(that.loanPeriod) &&
+            return this.loanTerm.equals(that.loanTerm) &&
                     this.initialLoan.equals(that.initialLoan) &&
                     this.startDate.isEqual(that.startDate) &&
                     this.endDate.isEqual(that.endDate) &&
@@ -63,7 +63,7 @@ public class Loan {
 
     @Override
     public int hashCode() {
-        return Objects.hash(initialLoan, loanPeriod, annualInterestPercentage);
+        return Objects.hash(initialLoan, loanTerm, annualInterestPercentage);
     }
 
 
@@ -91,8 +91,8 @@ public class Loan {
         return timing;
     }
 
-    public Period getLoanPeriod() {
-        return loanPeriod;
+    public Period getLoanTerm() {
+        return loanTerm;
     }
 
     public LocalDate getStartDate() {
@@ -118,7 +118,7 @@ public class Loan {
         }
 
         endDate = startdate.plusMonths(months).minusDays(1);
-        loanPeriod = Period.ofMonths(months);
+        loanTerm = Period.ofMonths(months);
 
     }
 

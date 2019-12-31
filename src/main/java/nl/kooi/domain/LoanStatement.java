@@ -22,7 +22,7 @@ public class LoanStatement {
 
     private LoanStatement(Loan loan, int period) {
         this.loan = loan;
-        numberOfPayments = periodToNumberOfPayments(loan.getLoanPeriod(), loan.getPeriodicity());
+        numberOfPayments = periodToNumberOfPayments(loan.getLoanTerm(), loan.getPeriodicity());
         periodNumber = period;
         balance = BigDecimal.ZERO;
         totalInterest = BigDecimal.ZERO;
@@ -31,7 +31,7 @@ public class LoanStatement {
     }
 
     public static LoanStatement of(Loan loan, int period) {
-        int numberOfPayments = periodToNumberOfPayments(loan.getLoanPeriod(), loan.getPeriodicity());
+        int numberOfPayments = periodToNumberOfPayments(loan.getLoanTerm(), loan.getPeriodicity());
 
         if (period < 0 || period > numberOfPayments) {
             throw new IllegalArgumentException("Invalid period, period must be between 0 and " + numberOfPayments);
@@ -75,8 +75,8 @@ public class LoanStatement {
     public LoanStatementDto toDto() {
         LoanStatementDto dto = new LoanStatementDto();
         dto.period = getPeriodNumber();
-        dto.balance = getBalance();
-        dto.totalInterest = getTotalInterest();
+        dto.balance = getBalance().setScale(5, RoundingMode.HALF_UP);
+        dto.totalInterest = getTotalInterest().setScale(5, RoundingMode.HALF_UP);
         dto.payment = getPayment().toDto();
         dto.date = getDate();
         return dto;
@@ -94,12 +94,12 @@ public class LoanStatement {
                 interestAmount = getLoan().getTiming() == Timing.IMMEDIATE ? getLoan().getInitialLoan().multiply(getLoan().getPeriodicInterestRate()) : BigDecimal.ZERO;
                 totalInterest = getTotalInterest().add(interestAmount);
                 repaymentAmount = BigDecimal.ZERO.compareTo(interestAmount) == 0 ? totalPayment : totalPayment.subtract(interestAmount);
-                balance = getLoan().getInitialLoan().subtract(repaymentAmount);
+                balance = getLoan().getInitialLoan().subtract(repaymentAmount).max(BigDecimal.ZERO);
             } else {
                 interestAmount = getBalance().multiply(getLoan().getPeriodicInterestRate());
                 totalInterest = getTotalInterest().add(interestAmount);
                 repaymentAmount = totalPayment.subtract(interestAmount);
-                balance = getBalance().subtract(repaymentAmount);
+                balance = getBalance().subtract(repaymentAmount).max(BigDecimal.ZERO);
 
             }
 
