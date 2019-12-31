@@ -29,7 +29,7 @@ import java.math.BigDecimal;
 
 public class AnnuityController {
 
-    @GetMapping(path = "/repaymentschedule", produces = "application/json")
+    @GetMapping(path = "/repayment-schedule", produces = "application/json")
     @ApiOperation("Generates a repayment schedule for an annuity loan.")
     public RepaymentScheduleDto getRepaymentSchedule(@NonNull @RequestParam("loan") String loan,
                                                      @NonNull @RequestParam("interest") String interest,
