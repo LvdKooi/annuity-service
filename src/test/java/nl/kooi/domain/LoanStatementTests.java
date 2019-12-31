@@ -15,7 +15,7 @@ public class LoanStatementTests {
     private BigDecimal annualInterestPercentage = BigDecimal.valueOf(2.69);
 
     @Test
-    public void testFirstPaymentMonthlyDue() {
+    public void testFirstPaymentMonthlyImmediate() {
         Loan loan = getLoan(Periodicity.MONTHLY, Timing.IMMEDIATE);
         LoanStatement loanStatement = LoanStatement.of(loan, 1);
 
@@ -25,12 +25,15 @@ public class LoanStatementTests {
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(794.60));
         assertInterestAmountIs(loanStatement, BigDecimal.valueOf(436.26));
         assertRepaymentAmountIs(loanStatement, BigDecimal.valueOf(358.35));
-
         assertInterestPlusRepaymentEqualsTotalPayment(loanStatement);
+
+        assertTotalInterestIs(loanStatement, BigDecimal.valueOf(436.26));
+        assertBalanceIs(loanStatement, BigDecimal.valueOf(197000 - 358.35));
+
     }
 
     @Test
-    public void testLastPaymentMonthlyDue() {
+    public void testLastPaymentMonthlyImmediate() {
         Loan loan = getLoan(Periodicity.MONTHLY, Timing.IMMEDIATE);
         LoanStatement loanStatement = LoanStatement.of(loan, 360);
 
@@ -40,12 +43,11 @@ public class LoanStatementTests {
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(794.60));
         assertInterestAmountIs(loanStatement, BigDecimal.valueOf(1.76));
         assertRepaymentAmountIs(loanStatement, BigDecimal.valueOf(792.85));
-
         assertInterestPlusRepaymentEqualsTotalPayment(loanStatement);
     }
 
     @Test
-    public void testFirstPaymentMonthlyImmediate() {
+    public void testFirstPaymentMonthlyDue() {
         Loan loan = getLoan(Periodicity.MONTHLY, Timing.DUE);
         LoanStatement loanStatement = LoanStatement.of(loan, 1);
 
@@ -55,12 +57,15 @@ public class LoanStatementTests {
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(792.85));
         assertInterestAmountIs(loanStatement, BigDecimal.valueOf(0.00));
         assertRepaymentAmountIs(loanStatement, BigDecimal.valueOf(792.85));
-
         assertInterestPlusRepaymentEqualsTotalPayment(loanStatement);
+
+        assertTotalInterestIs(loanStatement, BigDecimal.valueOf(0.00));
+        assertBalanceIs(loanStatement, BigDecimal.valueOf(197000 - 792.85));
+
     }
 
     @Test
-    public void testLastPaymentMonthlyImmediate() {
+    public void testLastPaymentMonthlyDue() {
         Loan loan = getLoan(Periodicity.MONTHLY, Timing.DUE);
         LoanStatement loanStatement = LoanStatement.of(loan, 360);
 
@@ -70,12 +75,11 @@ public class LoanStatementTests {
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(792.85));
         assertInterestAmountIs(loanStatement, BigDecimal.valueOf(1.75));
         assertRepaymentAmountIs(loanStatement, BigDecimal.valueOf(791.10));
-
         assertInterestPlusRepaymentEqualsTotalPayment(loanStatement);
     }
 
     @Test
-    public void testFirstPaymentQuarterlyDue() {
+    public void testFirstPaymentQuarterlyImmediate() {
         Loan loan = getLoan(Periodicity.QUARTERLY, Timing.IMMEDIATE);
         LoanStatement loanStatement = LoanStatement.of(loan, 1);
 
@@ -85,12 +89,15 @@ public class LoanStatementTests {
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(2389.10));
         assertInterestAmountIs(loanStatement, BigDecimal.valueOf(1311.67));
         assertRepaymentAmountIs(loanStatement, BigDecimal.valueOf(1077.43));
-
         assertInterestPlusRepaymentEqualsTotalPayment(loanStatement);
+
+        assertTotalInterestIs(loanStatement, BigDecimal.valueOf(1311.67));
+        assertBalanceIs(loanStatement, BigDecimal.valueOf(197000 - 1077.43));
+
     }
 
     @Test
-    public void testLastPaymentQuarterlyDue() {
+    public void testLastPaymentQuarterlyImmediate() {
         Loan loan = getLoan(Periodicity.QUARTERLY, Timing.IMMEDIATE);
         LoanStatement loanStatement = LoanStatement.of(loan, 120);
 
@@ -100,12 +107,11 @@ public class LoanStatementTests {
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(2389.10));
         assertInterestAmountIs(loanStatement, BigDecimal.valueOf(15.80));
         assertRepaymentAmountIs(loanStatement, BigDecimal.valueOf(2373.30));
-
         assertInterestPlusRepaymentEqualsTotalPayment(loanStatement);
     }
 
     @Test
-    public void testFirstPaymentQuarterlyImmediate() {
+    public void testFirstPaymentQuarterlyDue() {
         Loan loan = getLoan(Periodicity.QUARTERLY, Timing.DUE);
         LoanStatement loanStatement = LoanStatement.of(loan, 1);
 
@@ -115,12 +121,16 @@ public class LoanStatementTests {
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(2373.30));
         assertInterestAmountIs(loanStatement, BigDecimal.valueOf(0.00));
         assertRepaymentAmountIs(loanStatement, BigDecimal.valueOf(2373.30));
-
         assertInterestPlusRepaymentEqualsTotalPayment(loanStatement);
+
+        assertTotalInterestIs(loanStatement, BigDecimal.valueOf(0.00));
+        assertBalanceIs(loanStatement, BigDecimal.valueOf(197000 - 2373.30));
+
+
     }
 
     @Test
-    public void testLastPaymentQuarterlyImmediate() {
+    public void testLastPaymentQuarterlyDue() {
         Loan loan = getLoan(Periodicity.QUARTERLY, Timing.DUE);
         LoanStatement loanStatement = LoanStatement.of(loan, 120);
 
@@ -130,12 +140,11 @@ public class LoanStatementTests {
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(2373.30));
         assertInterestAmountIs(loanStatement, BigDecimal.valueOf(15.70));
         assertRepaymentAmountIs(loanStatement, BigDecimal.valueOf(2357.60));
-
         assertInterestPlusRepaymentEqualsTotalPayment(loanStatement);
     }
 
     @Test
-    public void testFirstPaymentSemiAnnualyDue() {
+    public void testFirstPaymentSemiAnnualyImmediate() {
         Loan loan = getLoan(Periodicity.SEMI_ANNUALLY, Timing.IMMEDIATE);
         LoanStatement loanStatement = LoanStatement.of(loan, 1);
 
@@ -145,27 +154,29 @@ public class LoanStatementTests {
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(4794.10));
         assertInterestAmountIs(loanStatement, BigDecimal.valueOf(2632.07));
         assertRepaymentAmountIs(loanStatement, BigDecimal.valueOf(2162.03));
-
         assertInterestPlusRepaymentEqualsTotalPayment(loanStatement);
+
+        assertTotalInterestIs(loanStatement, BigDecimal.valueOf(2632.07));
+        assertBalanceIs(loanStatement, BigDecimal.valueOf(197000 - 2162.03));
     }
 
     @Test
-    public void testLastPaymentSemiAnnualyDue() {
+    public void testLastPaymentSemiAnnualyImmediate() {
         Loan loan = getLoan(Periodicity.SEMI_ANNUALLY, Timing.IMMEDIATE);
         LoanStatement loanStatement = LoanStatement.of(loan, 60);
 
         assertThat(loanStatement.getNumberOfPayments(), is(60));
         assertThat(loanStatement.getDate(), is(LocalDate.of(2047, 3, 31)));
+        assertInterestPlusRepaymentEqualsTotalPayment(loanStatement);
 
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(4794.10));
         assertInterestAmountIs(loanStatement, BigDecimal.valueOf(63.21));
         assertRepaymentAmountIs(loanStatement, BigDecimal.valueOf(4730.89));
 
-        assertInterestPlusRepaymentEqualsTotalPayment(loanStatement);
     }
 
     @Test
-    public void testFirstPaymentSemiAnnualyImmediate() {
+    public void testFirstPaymentSemiAnnualyDue() {
         Loan loan = getLoan(Periodicity.SEMI_ANNUALLY, Timing.DUE);
         LoanStatement loanStatement = LoanStatement.of(loan, 1);
 
@@ -175,27 +186,29 @@ public class LoanStatementTests {
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(4730.89));
         assertInterestAmountIs(loanStatement, BigDecimal.valueOf(0.00));
         assertRepaymentAmountIs(loanStatement, BigDecimal.valueOf(4730.89));
-
         assertInterestPlusRepaymentEqualsTotalPayment(loanStatement);
+
+        assertTotalInterestIs(loanStatement, BigDecimal.valueOf(0.00));
+        assertBalanceIs(loanStatement, BigDecimal.valueOf(197000 - 4730.89));
+
     }
 
     @Test
-    public void testLastPaymentSemiAnnualyImmediate() {
+    public void testLastPaymentSemiAnnualyDue() {
         Loan loan = getLoan(Periodicity.SEMI_ANNUALLY, Timing.DUE);
         LoanStatement loanStatement = LoanStatement.of(loan, 60);
 
         assertThat(loanStatement.getNumberOfPayments(), is(60));
         assertThat(loanStatement.getDate(), is(LocalDate.of(2046, 10, 1)));
+        assertInterestPlusRepaymentEqualsTotalPayment(loanStatement);
 
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(4730.89));
         assertInterestAmountIs(loanStatement, BigDecimal.valueOf(62.37));
         assertRepaymentAmountIs(loanStatement, BigDecimal.valueOf(4668.52));
-
-        assertInterestPlusRepaymentEqualsTotalPayment(loanStatement);
     }
 
     @Test
-    public void testFirstPaymentAnnualyDue() {
+    public void testFirstPaymentAnnualyImmediate() {
         Loan loan = getLoan(Periodicity.ANNUALLY, Timing.IMMEDIATE);
         LoanStatement loanStatement = LoanStatement.of(loan, 1);
 
@@ -205,12 +218,14 @@ public class LoanStatementTests {
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(9652.25));
         assertInterestAmountIs(loanStatement, BigDecimal.valueOf(5299.30));
         assertRepaymentAmountIs(loanStatement, BigDecimal.valueOf(4352.95));
-
         assertInterestPlusRepaymentEqualsTotalPayment(loanStatement);
+
+        assertTotalInterestIs(loanStatement, BigDecimal.valueOf(5299.30));
+        assertBalanceIs(loanStatement, BigDecimal.valueOf(197000 - 4352.95));
     }
 
     @Test
-    public void testLastPaymentAnnualyDue() {
+    public void testLastPaymentAnnualyImmediate() {
         Loan loan = getLoan(Periodicity.ANNUALLY, Timing.IMMEDIATE);
         LoanStatement loanStatement = LoanStatement.of(loan, 30);
 
@@ -220,12 +235,11 @@ public class LoanStatementTests {
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(9652.25));
         assertInterestAmountIs(loanStatement, BigDecimal.valueOf(252.84));
         assertRepaymentAmountIs(loanStatement, BigDecimal.valueOf(9399.41));
-
         assertInterestPlusRepaymentEqualsTotalPayment(loanStatement);
     }
 
     @Test
-    public void testFirstPaymentAnnualyImmediate() {
+    public void testFirstPaymentAnnualyDue() {
         Loan loan = getLoan(Periodicity.ANNUALLY, Timing.DUE);
         LoanStatement loanStatement = LoanStatement.of(loan, 1);
 
@@ -235,12 +249,15 @@ public class LoanStatementTests {
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(9399.41));
         assertInterestAmountIs(loanStatement, BigDecimal.valueOf(0.00));
         assertRepaymentAmountIs(loanStatement, BigDecimal.valueOf(9399.41));
-
         assertInterestPlusRepaymentEqualsTotalPayment(loanStatement);
+
+        assertTotalInterestIs(loanStatement, BigDecimal.valueOf(0.00));
+        assertBalanceIs(loanStatement, BigDecimal.valueOf(197000 - 9399.41));
+
     }
 
     @Test
-    public void testLastPaymentAnnualyImmediate() {
+    public void testLastPaymentAnnualyDue() {
         Loan loan = getLoan(Periodicity.ANNUALLY, Timing.DUE);
         LoanStatement loanStatement = LoanStatement.of(loan, 30);
 
@@ -250,7 +267,6 @@ public class LoanStatementTests {
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(9399.41));
         assertInterestAmountIs(loanStatement, BigDecimal.valueOf(246.22));
         assertRepaymentAmountIs(loanStatement, BigDecimal.valueOf(9153.19));
-
         assertInterestPlusRepaymentEqualsTotalPayment(loanStatement);
     }
 
