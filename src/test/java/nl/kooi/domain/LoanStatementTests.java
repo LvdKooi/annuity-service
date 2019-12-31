@@ -281,4 +281,14 @@ public class LoanStatementTests {
     private static void assertInterestPlusRepaymentEqualsTotalPayment(LoanStatement loanStatement) {
         assertThat(loanStatement.getPayment().getRepaymentAmount().add(loanStatement.getPayment().getInterestAmount()).setScale(2, RoundingMode.HALF_UP), is(loanStatement.getPayment().getTotalPayment().setScale(2, RoundingMode.HALF_UP)));
     }
+
+    private static void assertTotalInterestIs(LoanStatement loanStatement, BigDecimal totalInterest) {
+        assertThat(loanStatement.getTotalInterest().setScale(2, RoundingMode.HALF_UP), is(totalInterest.setScale(2, RoundingMode.HALF_UP)));
+    }
+
+    private static void assertBalanceIs(LoanStatement loanStatement, BigDecimal balance) {
+        assertThat(loanStatement.getBalance().setScale(2, RoundingMode.HALF_UP), is(balance.setScale(2, RoundingMode.HALF_UP)));
+    }
 }
+
+

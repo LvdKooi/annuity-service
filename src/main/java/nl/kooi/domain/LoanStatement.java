@@ -45,16 +45,16 @@ public class LoanStatement {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LoanStatement that = (LoanStatement) o;
-        return numberOfPayments == that.numberOfPayments &&
-                loan.equals(that.loan) &&
-                payment.equals(that.payment) &&
-                balance.equals(that.balance) &&
-                totalInterest.equals(that.totalInterest);
+        return getNumberOfPayments() == that.getNumberOfPayments() &&
+                getLoan().equals(that.getLoan()) &&
+                getPayment().equals(that.getPayment()) &&
+                getBalance().equals(that.getBalance()) &&
+                getTotalInterest().equals(that.getTotalInterest());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(loan, numberOfPayments, payment, balance, totalInterest);
+        return Objects.hash(getLoan(), getNumberOfPayments(), getPayment(), getBalance(), getTotalInterest());
     }
 
     private static int periodToNumberOfPayments(Period loanPeriod, Periodicity periodicity) {
@@ -74,11 +74,11 @@ public class LoanStatement {
 
     public LoanStatementDto toDto() {
         LoanStatementDto dto = new LoanStatementDto();
-        dto.period = periodNumber;
-        dto.balance = balance;
-        dto.totalInterest = totalInterest;
-        dto.payment = payment.toDto();
-        dto.date = date;
+        dto.period = getPeriodNumber();
+        dto.balance = getBalance();
+        dto.totalInterest = getTotalInterest();
+        dto.payment = getPayment().toDto();
+        dto.date = getDate();
         return dto;
     }
 
@@ -91,32 +91,32 @@ public class LoanStatement {
 
 //            the difference between due and immediate payment is expressed at the first payment
             if (i == 1) {
-                interestAmount = loan.getTiming() == Timing.IMMEDIATE ? getLoan().getInitialLoan().multiply(loan.getPeriodicInterestRate()) : BigDecimal.ZERO;
-                totalInterest = totalInterest.add(interestAmount);
+                interestAmount = getLoan().getTiming() == Timing.IMMEDIATE ? getLoan().getInitialLoan().multiply(getLoan().getPeriodicInterestRate()) : BigDecimal.ZERO;
+                totalInterest = getTotalInterest().add(interestAmount);
                 repaymentAmount = BigDecimal.ZERO.compareTo(interestAmount) == 0 ? totalPayment : totalPayment.subtract(interestAmount);
-                balance = loan.getInitialLoan().subtract(repaymentAmount);
+                balance = getLoan().getInitialLoan().subtract(repaymentAmount);
             } else {
-                interestAmount = balance.multiply(loan.getPeriodicInterestRate());
-                totalInterest = totalInterest.add(interestAmount);
+                interestAmount = getBalance().multiply(getLoan().getPeriodicInterestRate());
+                totalInterest = getTotalInterest().add(interestAmount);
                 repaymentAmount = totalPayment.subtract(interestAmount);
-                balance = balance.subtract(repaymentAmount);
+                balance = getBalance().subtract(repaymentAmount);
 
             }
 
-            if (i == periodNumber) {
+            if (i == getPeriodNumber()) {
                 payment = new Payment(totalPayment, interestAmount, repaymentAmount);
             }
         }
     }
 
     private BigDecimal getTotalPeriodicPayment() {
-        return loan.getInitialLoan().divide(getAnnuity(getLoan().getTiming(), loan.getPeriodicInterestRate(), getNumberOfPayments()), 10, RoundingMode.HALF_UP);
+        return getLoan().getInitialLoan().divide(getAnnuity(getLoan().getTiming(), getLoan().getPeriodicInterestRate(), getNumberOfPayments()), 10, RoundingMode.HALF_UP);
     }
 
     private void setDateOfPeriod() {
-        int monthsBetweenPaymentDates = 12 / loan.getPeriodicity().getDivisor();
+        int monthsBetweenPaymentDates = 12 / getLoan().getPeriodicity().getDivisor();
 
-        date = loan.getTiming() == Timing.IMMEDIATE ? loan.getStartDate().withDayOfMonth(1).plusMonths((monthsBetweenPaymentDates * periodNumber)).minusDays(1) : loan.getStartDate().withDayOfMonth(1).plusMonths((periodNumber - 1) * monthsBetweenPaymentDates);
+        date = getLoan().getTiming() == Timing.IMMEDIATE ? getLoan().getStartDate().withDayOfMonth(1).plusMonths((monthsBetweenPaymentDates * getPeriodNumber())).minusDays(1) : getLoan().getStartDate().withDayOfMonth(1).plusMonths((getPeriodNumber() - 1) * monthsBetweenPaymentDates);
 
     }
 
@@ -140,5 +140,12 @@ public class LoanStatement {
         return numberOfPayments;
     }
 
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public BigDecimal getTotalInterest() {
+        return totalInterest;
+    }
 }
 
