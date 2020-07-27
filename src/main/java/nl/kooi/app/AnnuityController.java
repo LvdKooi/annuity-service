@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 
 /**
@@ -38,13 +39,15 @@ public class AnnuityController {
                                                      @NonNull @RequestParam("start-date") String startdate,
                                                      @NonNull @RequestParam("loan-term-in-months") int months) {
 
-        Loan loanObject = new Loan.Builder()
-                .setInitialLoan(new BigDecimal(loan.trim()))
-                .setAnnualInterestPercentage(new BigDecimal(interest.trim()))
-                .setPeriodicity(periodicity)
-                .setTiming(timing)
-                .setStartdate(startdate)
-                .setMonths(months)
+
+
+        var loanObject = Loan.builder()
+                .initialLoan(new BigDecimal(loan.trim()))
+                .annualInterestPercentage(new BigDecimal(interest.trim()))
+                .periodicity(periodicity)
+                .timing(timing)
+                .startdate(startdate)
+                .months(months)
                 .build();
 
         return new RepaymentSchedule(loanObject).toDto();

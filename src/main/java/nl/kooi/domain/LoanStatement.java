@@ -1,19 +1,22 @@
 package nl.kooi.domain;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import nl.kooi.dto.LoanStatementDto;
+import nl.kooi.utils.ActuarialUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Objects;
 
-import static nl.kooi.utils.ActuarialUtils.getAnnuity;
 
+@EqualsAndHashCode
+@Getter
 public class LoanStatement {
-    private Loan loan;
-    private int periodNumber;
-    private int numberOfPayments;
+    private final Loan loan;
+    private final int periodNumber;
+    private final int numberOfPayments;
     private LocalDate date;
     private Payment payment;
     private BigDecimal balance;
@@ -31,30 +34,13 @@ public class LoanStatement {
     }
 
     public static LoanStatement of(Loan loan, int period) {
-        int numberOfPayments = periodToNumberOfPayments(loan.getLoanTerm(), loan.getPeriodicity());
+        var numberOfPayments = periodToNumberOfPayments(loan.getLoanTerm(), loan.getPeriodicity());
 
         if (period < 0 || period > numberOfPayments) {
             throw new IllegalArgumentException("Invalid period, period must be between 0 and " + numberOfPayments);
         }
 
         return new LoanStatement(loan, period);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        LoanStatement that = (LoanStatement) o;
-        return getNumberOfPayments() == that.getNumberOfPayments() &&
-                getLoan().equals(that.getLoan()) &&
-                getPayment().equals(that.getPayment()) &&
-                getBalance().equals(that.getBalance()) &&
-                getTotalInterest().equals(that.getTotalInterest());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getLoan(), getNumberOfPayments(), getPayment(), getBalance(), getTotalInterest());
     }
 
     private static int periodToNumberOfPayments(Period loanPeriod, Periodicity periodicity) {
@@ -73,7 +59,7 @@ public class LoanStatement {
     }
 
     public LoanStatementDto toDto() {
-        LoanStatementDto dto = new LoanStatementDto();
+        var dto = new LoanStatementDto();
         dto.period = getPeriodNumber();
         dto.balance = getBalance().setScale(5, RoundingMode.HALF_UP);
         dto.totalInterest = getTotalInterest().setScale(5, RoundingMode.HALF_UP);
@@ -83,9 +69,9 @@ public class LoanStatement {
     }
 
     private void setBalanceTotalInterestAndPayment() {
-        BigDecimal repaymentAmount;
-        BigDecimal interestAmount;
-        BigDecimal totalPayment = getTotalPeriodicPayment();
+        var repaymentAmount = BigDecimal.ZERO;
+        var interestAmount = BigDecimal.ZERO;
+        var totalPayment = getTotalPeriodicPayment();
 
         for (int i = 1; i <= getPeriodNumber(); i++) {
 
@@ -110,42 +96,15 @@ public class LoanStatement {
     }
 
     private BigDecimal getTotalPeriodicPayment() {
-        return getLoan().getInitialLoan().divide(getAnnuity(getLoan().getTiming(), getLoan().getPeriodicInterestRate(), getNumberOfPayments()), 10, RoundingMode.HALF_UP);
+        return getLoan().getInitialLoan().divide(ActuarialUtils.getAnnuity(getLoan().getTiming(), getLoan().getPeriodicInterestRate(), getNumberOfPayments()), 10, RoundingMode.HALF_UP);
     }
 
     private void setDateOfPeriod() {
-        int monthsBetweenPaymentDates = 12 / getLoan().getPeriodicity().getDivisor();
+        var monthsBetweenPaymentDates = 12 / getLoan().getPeriodicity().getDivisor();
 
         date = getLoan().getTiming() == Timing.IMMEDIATE ? getLoan().getStartDate().withDayOfMonth(1).plusMonths((monthsBetweenPaymentDates * getPeriodNumber())).minusDays(1) : getLoan().getStartDate().withDayOfMonth(1).plusMonths((getPeriodNumber() - 1) * monthsBetweenPaymentDates);
 
     }
-
-    public int getPeriodNumber() {
-        return periodNumber;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public Payment getPayment() {
-        return payment;
-    }
-
-    public Loan getLoan() {
-        return loan;
-    }
-
-    public int getNumberOfPayments() {
-        return numberOfPayments;
-    }
-
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public BigDecimal getTotalInterest() {
-        return totalInterest;
-    }
 }
+
 

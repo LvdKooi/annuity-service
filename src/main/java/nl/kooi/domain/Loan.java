@@ -1,27 +1,31 @@
 package nl.kooi.domain;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import nl.kooi.dto.LoanDto;
 import nl.kooi.exception.InvalidDateException;
 import nl.kooi.exception.LoanException;
 import nl.kooi.utils.ActuarialUtils;
 
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Objects;
 
+@EqualsAndHashCode
+@Getter
 public class Loan {
-    private BigDecimal initialLoan;
-    private BigDecimal annualInterestPercentage;
-    private BigDecimal annualInterestRate;
-    private BigDecimal periodicInterestRate;
-    private Periodicity periodicity;
-    private LocalDate startDate;
+    private final @Positive BigDecimal initialLoan;
+    private final @Positive BigDecimal annualInterestPercentage;
+    private final BigDecimal annualInterestRate;
+    private final BigDecimal periodicInterestRate;
+    private final Periodicity periodicity;
+    private final LocalDate startDate;
+    private final Timing timing;
     private LocalDate endDate;
     private Period loanTerm;
-    private Timing timing;
 
     private Loan(BigDecimal initialLoan,
                  BigDecimal annualInterestPercentage,
@@ -40,67 +44,8 @@ public class Loan {
         setLoanPeriodAndEnddate(startdate, months);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        if (o instanceof Loan) {
-            Loan that = (Loan) o;
-
-            return this.loanTerm.equals(that.loanTerm) &&
-                    this.initialLoan.equals(that.initialLoan) &&
-                    this.startDate.isEqual(that.startDate) &&
-                    this.endDate.isEqual(that.endDate) &&
-                    this.annualInterestPercentage.equals(that.annualInterestPercentage) &&
-                    this.timing == that.timing &&
-                    this.periodicity == that.periodicity;
-        }
-
-        return false;
-
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(initialLoan, loanTerm, annualInterestPercentage);
-    }
-
-
-    public BigDecimal getInitialLoan() {
-        return initialLoan;
-    }
-
-    public BigDecimal getAnnualInterestPercentage() {
-        return annualInterestPercentage;
-    }
-
-    public BigDecimal getAnnualInterestRate(){
-        return annualInterestRate;
-    }
-
-    public BigDecimal getPeriodicInterestRate() {
-        return periodicInterestRate;
-    }
-
-    public Periodicity getPeriodicity() {
-        return periodicity;
-    }
-
-    public Timing getTiming() {
-        return timing;
-    }
-
-    public Period getLoanTerm() {
-        return loanTerm;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
+    public static LoanBuilder builder() {
+        return new LoanBuilder();
     }
 
     private void setLoanPeriodAndEnddate(LocalDate startdate, int months) {
@@ -123,7 +68,7 @@ public class Loan {
     }
 
     public LoanDto toDto() {
-        LoanDto dto = new LoanDto();
+        var dto = new LoanDto();
 
         dto.annualInterestPercentage = this.annualInterestPercentage;
         dto.initialLoan = this.initialLoan;
@@ -135,7 +80,7 @@ public class Loan {
         return dto;
     }
 
-    public static class Builder {
+    public static class LoanBuilder {
         private BigDecimal initialLoan;
         private BigDecimal annualInterestPercentage;
         private Periodicity periodicity;
@@ -143,94 +88,55 @@ public class Loan {
         private LocalDate startdate;
         private int months;
 
-        public Builder() {
-
+        LoanBuilder() {
         }
 
-        public Builder setInitialLoan(BigDecimal initialLoan) {
+        public LoanBuilder initialLoan(BigDecimal initialLoan) {
             if (initialLoan.compareTo(BigDecimal.ZERO) < 1) {
                 throw new LoanException("A loan should be larger than 0.");
             }
-
             this.initialLoan = initialLoan;
             return this;
-
         }
 
-        public Builder setInitialLoan(Double initialLoan) {
-            return setInitialLoan(BigDecimal.valueOf(initialLoan));
-        }
-
-        public Builder setAnnualInterestPercentage(BigDecimal annualInterestPercentage) {
+        public LoanBuilder annualInterestPercentage(BigDecimal annualInterestPercentage) {
             if (annualInterestPercentage.compareTo(BigDecimal.ZERO) <= 0) {
                 throw new LoanException("The annual interest on a loan can't be equal or smaller than 0.");
             }
-
             this.annualInterestPercentage = annualInterestPercentage;
             return this;
         }
 
-        public Builder setAnnualInterestPercentage(Double annualInterestPercentage) {
-            return setAnnualInterestPercentage(BigDecimal.valueOf(annualInterestPercentage));
+        public LoanBuilder periodicity(Periodicity periodicity) {
+            this.periodicity = periodicity;
+            return this;
         }
 
-        public Builder setPeriodicity(Periodicity periodicity) {
-            try {
-                this.periodicity = periodicity;
-                return this;
-            } catch (IllegalArgumentException e) {
-                throw new LoanException("Periodicity should contain MONTHLY, QUARTERLY, SEMI_ANNUALLY or ANNUALLY");
-            }
+        public LoanBuilder timing(Timing timing) {
+            this.timing = timing;
+            return this;
         }
 
-        public Builder setPeriodicity(String periodicity) {
-            try {
-                return setPeriodicity(Periodicity.valueOf(periodicity.toUpperCase()));
-            } catch (IllegalArgumentException e) {
-                throw new LoanException("Periodicity should contain MONTHLY, QUARTERLY, SEMI_ANNUALLY or ANNUALLY");
-            }
-        }
-
-        public Builder setTiming(Timing timing) {
-            try {
-                this.timing = timing;
-                return this;
-            } catch (IllegalArgumentException e) {
-                throw new LoanException("Timing should be either IMMEDIATE or DUE.");
-            }
-        }
-
-
-        public Builder setTiming(String timing) {
-            try {
-                return setTiming(Timing.valueOf(timing.toUpperCase()));
-            } catch (IllegalArgumentException e) {
-                throw new LoanException("Timing should be either IMMEDIATE or DUE.");
-            }
-        }
-
-        public Builder setStartdate(LocalDate startdate) {
+        public LoanBuilder startdate(LocalDate startdate) {
             this.startdate = startdate;
             return this;
         }
 
-        public Builder setStartdate(String startdate) {
-            this.startdate = dateFromStringConverter(startdate);
-            return this;
+        public LoanBuilder startdate(String startdate) {
+            return startdate(dateFromStringConverter(startdate));
         }
 
-        public Builder setMonths(int months) {
+        public LoanBuilder months(int months) {
             this.months = months;
             return this;
         }
 
         public Loan build() {
-            return new Loan(initialLoan,
-                    annualInterestPercentage,
-                    periodicity,
-                    timing,
-                    startdate,
-                    months);
+            return new Loan(initialLoan, annualInterestPercentage, periodicity, timing, startdate, months);
+        }
+
+        public String toString() {
+            return "Loan.LoanBuilder(initialLoan=" + this.initialLoan + ", annualInterestPercentage=" + this.annualInterestPercentage + ", periodicity=" + this.periodicity + ", timing=" + this.timing + ", startdate=" + this.startdate + ", months=" + this.months + ")";
         }
 
         private LocalDate dateFromStringConverter(String date) {
@@ -239,7 +145,7 @@ public class Loan {
                 if (date.length() != 10) {
                     throw new InvalidDateException("A datestring should contain 10 characters i.e. 2019-01-01.");
                 }
-                return LocalDate.of(Integer.parseInt(date.substring(0, 4)), Integer.parseInt(date.substring(5, 7)), Integer.parseInt(date.substring(8)));
+                return LocalDate.parse(date);
             } catch (DateTimeException e) {
                 throw new InvalidDateException("Invalid date format. A date should look like this: yyyy-mm-dd. For example: 2019-01-01");
             }

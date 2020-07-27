@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import static nl.kooi.domain.Periodicity.MONTHLY;
+import static nl.kooi.domain.Timing.IMMEDIATE;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class LoanTests {
@@ -28,24 +30,24 @@ public class LoanTests {
     }
 
     private Loan getLoan() {
-        return new Loan.Builder()
-                .setInitialLoan(1000.0)
-                .setAnnualInterestPercentage(1.0)
-                .setMonths(120)
-                .setPeriodicity("MONTHLY")
-                .setStartdate("2019-01-01")
-                .setTiming("IMMEDIATE")
+        return Loan.builder()
+                .initialLoan(BigDecimal.valueOf(1000.0))
+                .annualInterestPercentage(BigDecimal.ONE)
+                .months(120)
+                .periodicity(MONTHLY)
+                .startdate(LocalDate.parse("2019-01-01"))
+                .timing(IMMEDIATE)
                 .build();
     }
 
     private LoanDto getLoanDtoExpectation() {
         LoanDto loanDtoExpectation = new LoanDto();
-        loanDtoExpectation.periodicity = Periodicity.MONTHLY;
+        loanDtoExpectation.periodicity = MONTHLY;
         loanDtoExpectation.initialLoan = BigDecimal.valueOf(1000.0);
-        loanDtoExpectation.annualInterestPercentage = BigDecimal.valueOf(1.0);
+        loanDtoExpectation.annualInterestPercentage = BigDecimal.ONE;
         loanDtoExpectation.startDate = LocalDate.of(2019, 1, 1);
         loanDtoExpectation.endDate = LocalDate.of(2028, 12, 31);
-        loanDtoExpectation.timing = Timing.IMMEDIATE;
+        loanDtoExpectation.timing = IMMEDIATE;
 
         return loanDtoExpectation;
     }

@@ -10,7 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 public class RepaymentScheduleTests {
-    private Loan.Builder loanBuilder = new Loan.Builder();
+    private Loan.LoanBuilder loanBuilder = Loan.builder();
     private BigDecimal initionalLoan = BigDecimal.valueOf(197000);
     private BigDecimal annualInterestPercentage = BigDecimal.valueOf(2.69);
 
@@ -48,12 +48,12 @@ public class RepaymentScheduleTests {
 
     private Loan getLoan(Periodicity periodicity, Timing timing) {
         return loanBuilder
-                .setInitialLoan(initionalLoan)
-                .setAnnualInterestPercentage(annualInterestPercentage)
-                .setPeriodicity(periodicity)
-                .setStartdate(LocalDate.of(2020, 1, 1))
-                .setMonths(12)
-                .setTiming(timing)
+                .initialLoan(initionalLoan)
+                .annualInterestPercentage(annualInterestPercentage)
+                .periodicity(periodicity)
+                .startdate(LocalDate.of(2020, 1, 1))
+                .months(12)
+                .timing(timing)
                 .build();
 
     }
