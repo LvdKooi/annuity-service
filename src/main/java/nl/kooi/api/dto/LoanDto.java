@@ -2,7 +2,6 @@ package nl.kooi.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import nl.kooi.domain.Loan;
 import nl.kooi.domain.Periodicity;
 import nl.kooi.domain.Timing;
 
@@ -11,7 +10,6 @@ import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.Period;
 
 @Data
 public class LoanDto implements Serializable {

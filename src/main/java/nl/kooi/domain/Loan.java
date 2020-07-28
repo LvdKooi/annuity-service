@@ -2,6 +2,7 @@ package nl.kooi.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 import nl.kooi.exception.InvalidDateException;
 import nl.kooi.exception.LoanException;
 import nl.kooi.utils.ActuarialUtils;
@@ -26,12 +27,12 @@ public class Loan {
     private LocalDate endDate;
     private Period loanTerm;
 
-    private Loan(BigDecimal initialLoan,
-                 BigDecimal annualInterestPercentage,
-                 Periodicity periodicity,
-                 Timing timing,
-                 LocalDate startdate,
-                 int months) {
+    private Loan(@NonNull BigDecimal initialLoan,
+                 @NonNull BigDecimal annualInterestPercentage,
+                 @NonNull Periodicity periodicity,
+                 @NonNull Timing timing,
+                 @NonNull LocalDate startdate,
+                 @NonNull Integer months) {
 
         this.initialLoan = initialLoan;
         this.annualInterestPercentage = annualInterestPercentage;
@@ -72,7 +73,7 @@ public class Loan {
         private Periodicity periodicity;
         private Timing timing;
         private LocalDate startdate;
-        private int months;
+        private Integer months;
 
         LoanBuilder() {
         }
@@ -112,7 +113,7 @@ public class Loan {
             return startdate(dateFromStringConverter(startdate));
         }
 
-        public LoanBuilder months(int months) {
+        public LoanBuilder months(Integer months) {
             this.months = months;
             return this;
         }
