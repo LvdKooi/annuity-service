@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class LoanStatementTests {
     private Loan.LoanBuilder loanBuilder = Loan.builder();
@@ -22,8 +22,8 @@ public class LoanStatementTests {
         LoanStatement loanStatement = LoanStatement.of(loan, 1);
 
         //      test general information
-        assertThat(loanStatement.getDate(), is(LocalDate.of(2017, 4, 30)));
-        assertThat(loanStatement.getNumberOfPayments(), is(360));
+        assertThat(loanStatement.getDate()).isEqualTo(LocalDate.of(2017, 4, 30));
+        assertThat(loanStatement.getNumberOfPayments()).isEqualTo(360);
 
         //      test payment
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(794.60));
@@ -42,8 +42,8 @@ public class LoanStatementTests {
         LoanStatement loanStatement = LoanStatement.of(loan, 360);
 
         //      test general information
-        assertThat(loanStatement.getDate(), is(LocalDate.of(2047, 3, 31)));
-        assertThat(loanStatement.getNumberOfPayments(), is(360));
+        assertThat(loanStatement.getDate()).isEqualTo(LocalDate.of(2047, 3, 31));
+        assertThat(loanStatement.getNumberOfPayments()).isEqualTo(360);
 
         //      test payment
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(794.60));
@@ -62,8 +62,8 @@ public class LoanStatementTests {
         LoanStatement loanStatement = LoanStatement.of(loan, 1);
 
         //      test general information
-        assertThat(loanStatement.getNumberOfPayments(), is(360));
-        assertThat(loanStatement.getDate(), is(LocalDate.of(2017, 4, 1)));
+        assertThat(loanStatement.getNumberOfPayments()).isEqualTo(360);
+        assertThat(loanStatement.getDate()).isEqualTo(LocalDate.of(2017, 4, 1));
 
         //      test payment
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(792.85));
@@ -82,8 +82,8 @@ public class LoanStatementTests {
         LoanStatement loanStatement = LoanStatement.of(loan, 360);
 
         //      test general information
-        assertThat(loanStatement.getNumberOfPayments(), is(360));
-        assertThat(loanStatement.getDate(), is(LocalDate.of(2047, 3, 1)));
+        assertThat(loanStatement.getNumberOfPayments()).isEqualTo(360);
+        assertThat(loanStatement.getDate()).isEqualTo(LocalDate.of(2047, 3, 1));
 
         //      test payment
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(792.85));
@@ -102,8 +102,8 @@ public class LoanStatementTests {
         LoanStatement loanStatement = LoanStatement.of(loan, 1);
 
         //      test general information
-        assertThat(loanStatement.getNumberOfPayments(), is(120));
-        assertThat(loanStatement.getDate(), is(LocalDate.of(2017, 6, 30)));
+        assertThat(loanStatement.getNumberOfPayments()).isEqualTo(120);
+        assertThat(loanStatement.getDate()).isEqualTo(LocalDate.of(2017, 6, 30));
 
         //      test payment
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(2389.10));
@@ -122,8 +122,8 @@ public class LoanStatementTests {
         LoanStatement loanStatement = LoanStatement.of(loan, 120);
 
         //      test general information
-        assertThat(loanStatement.getNumberOfPayments(), is(120));
-        assertThat(loanStatement.getDate(), is(LocalDate.of(2047, 3, 31)));
+        assertThat(loanStatement.getNumberOfPayments()).isEqualTo(120);
+        assertThat(loanStatement.getDate()).isEqualTo(LocalDate.of(2047, 3, 31));
 
         //      test payment
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(2389.10));
@@ -142,8 +142,8 @@ public class LoanStatementTests {
         LoanStatement loanStatement = LoanStatement.of(loan, 1);
 
         //      test general information
-        assertThat(loanStatement.getNumberOfPayments(), is(120));
-        assertThat(loanStatement.getDate(), is(LocalDate.of(2017, 4, 1)));
+        assertThat(loanStatement.getNumberOfPayments()).isEqualTo(120);
+        assertThat(loanStatement.getDate()).isEqualTo(LocalDate.of(2017, 4, 1));
 
         //      test payment
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(2373.30));
@@ -162,8 +162,8 @@ public class LoanStatementTests {
         LoanStatement loanStatement = LoanStatement.of(loan, 120);
 
         //      test general information
-        assertThat(loanStatement.getNumberOfPayments(), is(120));
-        assertThat(loanStatement.getDate(), is(LocalDate.of(2047, 1, 1)));
+        assertThat(loanStatement.getNumberOfPayments()).isEqualTo(120);
+        assertThat(loanStatement.getDate()).isEqualTo(LocalDate.of(2047, 1, 1));
 
         //      test payment
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(2373.30));
@@ -182,8 +182,8 @@ public class LoanStatementTests {
         LoanStatement loanStatement = LoanStatement.of(loan, 1);
 
         //      test general information
-        assertThat(loanStatement.getNumberOfPayments(), is(60));
-        assertThat(loanStatement.getDate(), is(LocalDate.of(2017, 9, 30)));
+        assertThat(loanStatement.getNumberOfPayments()).isEqualTo(60);
+        assertThat(loanStatement.getDate()).isEqualTo(LocalDate.of(2017, 9, 30));
 
         //      test payment
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(4794.10));
@@ -202,8 +202,8 @@ public class LoanStatementTests {
         LoanStatement loanStatement = LoanStatement.of(loan, 60);
 
         //      test general information
-        assertThat(loanStatement.getNumberOfPayments(), is(60));
-        assertThat(loanStatement.getDate(), is(LocalDate.of(2047, 3, 31)));
+        assertThat(loanStatement.getNumberOfPayments()).isEqualTo(60);
+        assertThat(loanStatement.getDate()).isEqualTo(LocalDate.of(2047, 3, 31));
         assertInterestPlusRepaymentEqualsTotalPayment(loanStatement);
 
         //      test payment
@@ -222,8 +222,8 @@ public class LoanStatementTests {
         LoanStatement loanStatement = LoanStatement.of(loan, 1);
 
         //      test general information
-        assertThat(loanStatement.getNumberOfPayments(), is(60));
-        assertThat(loanStatement.getDate(), is(LocalDate.of(2017, 4, 1)));
+        assertThat(loanStatement.getNumberOfPayments()).isEqualTo(60);
+        assertThat(loanStatement.getDate()).isEqualTo(LocalDate.of(2017, 4, 1));
 
         //      test payment
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(4730.89));
@@ -242,8 +242,8 @@ public class LoanStatementTests {
         LoanStatement loanStatement = LoanStatement.of(loan, 60);
 
         //      test general information
-        assertThat(loanStatement.getNumberOfPayments(), is(60));
-        assertThat(loanStatement.getDate(), is(LocalDate.of(2046, 10, 1)));
+        assertThat(loanStatement.getNumberOfPayments()).isEqualTo(60);
+        assertThat(loanStatement.getDate()).isEqualTo(LocalDate.of(2046, 10, 1));
         assertInterestPlusRepaymentEqualsTotalPayment(loanStatement);
 
         //      test payment
@@ -262,8 +262,8 @@ public class LoanStatementTests {
         LoanStatement loanStatement = LoanStatement.of(loan, 1);
 
         //      test general information
-        assertThat(loanStatement.getNumberOfPayments(), is(30));
-        assertThat(loanStatement.getDate(), is(LocalDate.of(2018, 3, 31)));
+        assertThat(loanStatement.getNumberOfPayments()).isEqualTo(30);
+        assertThat(loanStatement.getDate()).isEqualTo(LocalDate.of(2018, 3, 31));
 
         //      test payment
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(9652.25));
@@ -282,8 +282,8 @@ public class LoanStatementTests {
         LoanStatement loanStatement = LoanStatement.of(loan, 30);
 
         //      test general information
-        assertThat(loanStatement.getNumberOfPayments(), is(30));
-        assertThat(loanStatement.getDate(), is(LocalDate.of(2047, 3, 31)));
+        assertThat(loanStatement.getNumberOfPayments()).isEqualTo(30);
+        assertThat(loanStatement.getDate()).isEqualTo(LocalDate.of(2047, 3, 31));
 
         //      test payment
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(9652.25));
@@ -302,8 +302,8 @@ public class LoanStatementTests {
         LoanStatement loanStatement = LoanStatement.of(loan, 1);
 
         //      test general information
-        assertThat(loanStatement.getNumberOfPayments(), is(30));
-        assertThat(loanStatement.getDate(), is(LocalDate.of(2017, 4, 1)));
+        assertThat(loanStatement.getNumberOfPayments()).isEqualTo(30);
+        assertThat(loanStatement.getDate()).isEqualTo(LocalDate.of(2017, 4, 1));
 
         //      test payment
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(9399.41));
@@ -322,8 +322,8 @@ public class LoanStatementTests {
         LoanStatement loanStatement = LoanStatement.of(loan, 30);
 
         //      test general information
-        assertThat(loanStatement.getNumberOfPayments(), is(30));
-        assertThat(loanStatement.getDate(), is(LocalDate.of(2046, 4, 1)));
+        assertThat(loanStatement.getNumberOfPayments()).isEqualTo(30);
+        assertThat(loanStatement.getDate()).isEqualTo(LocalDate.of(2046, 4, 1));
 
         //      test payment
         assertTotalPaymentIs(loanStatement, BigDecimal.valueOf(9399.41));
@@ -348,27 +348,27 @@ public class LoanStatementTests {
     }
 
     private static void assertTotalPaymentIs(LoanStatement loanStatement, BigDecimal totalPayment) {
-        assertThat(loanStatement.getPayment().getTotalPayment().setScale(2, RoundingMode.HALF_UP), is(totalPayment.setScale(2, RoundingMode.HALF_UP)));
+        assertThat(loanStatement.getPayment().getTotalPayment().setScale(2, RoundingMode.HALF_UP)).isEqualTo(totalPayment.setScale(2, RoundingMode.HALF_UP));
     }
 
     private static void assertRepaymentAmountIs(LoanStatement loanStatement, BigDecimal repaymentAmount) {
-        assertThat(loanStatement.getPayment().getRepaymentAmount().setScale(2, RoundingMode.HALF_UP), is(repaymentAmount.setScale(2, RoundingMode.HALF_UP)));
+        assertThat(loanStatement.getPayment().getRepaymentAmount().setScale(2, RoundingMode.HALF_UP)).isEqualTo(repaymentAmount.setScale(2, RoundingMode.HALF_UP));
     }
 
     private static void assertInterestAmountIs(LoanStatement loanStatement, BigDecimal interestAmount) {
-        assertThat(loanStatement.getPayment().getInterestAmount().setScale(2, RoundingMode.HALF_UP), is(interestAmount.setScale(2, RoundingMode.HALF_UP)));
+        assertThat(loanStatement.getPayment().getInterestAmount().setScale(2, RoundingMode.HALF_UP)).isEqualTo(interestAmount.setScale(2, RoundingMode.HALF_UP));
     }
 
     private static void assertInterestPlusRepaymentEqualsTotalPayment(LoanStatement loanStatement) {
-        assertThat(loanStatement.getPayment().getRepaymentAmount().add(loanStatement.getPayment().getInterestAmount()).setScale(2, RoundingMode.HALF_UP), is(loanStatement.getPayment().getTotalPayment().setScale(2, RoundingMode.HALF_UP)));
+        assertThat(loanStatement.getPayment().getRepaymentAmount().add(loanStatement.getPayment().getInterestAmount()).setScale(2, RoundingMode.HALF_UP)).isEqualTo(loanStatement.getPayment().getTotalPayment().setScale(2, RoundingMode.HALF_UP));
     }
 
     private static void assertTotalInterestIs(LoanStatement loanStatement, BigDecimal totalInterest) {
-        assertThat(loanStatement.getTotalInterest().setScale(2, RoundingMode.HALF_UP), is(totalInterest.setScale(2, RoundingMode.HALF_UP)));
+        assertThat(loanStatement.getTotalInterest().setScale(2, RoundingMode.HALF_UP)).isEqualTo(totalInterest.setScale(2, RoundingMode.HALF_UP));
     }
 
     private static void assertBalanceIs(LoanStatement loanStatement, BigDecimal balance) {
-        assertThat(loanStatement.getBalance().setScale(2, RoundingMode.HALF_UP), is(balance.setScale(2, RoundingMode.HALF_UP)));
+        assertThat(loanStatement.getBalance().setScale(2, RoundingMode.HALF_UP)).isEqualTo(balance.setScale(2, RoundingMode.HALF_UP));
     }
 }
 

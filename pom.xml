@@ -23,9 +23,15 @@
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <copy-rename-maven-plugin.version>1.0</copy-rename-maven-plugin.version>
         <swagger.version>2.9.2</swagger.version>
+        <modelmapper.version>2.3.0</modelmapper.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.modelmapper.extensions</groupId>
+            <artifactId>modelmapper-spring</artifactId>
+            <version>${modelmapper.version}</version>
+        </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>

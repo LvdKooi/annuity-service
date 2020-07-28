@@ -1,4 +1,4 @@
-package nl.kooi.dto;
+package nl.kooi.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -6,7 +6,6 @@ import nl.kooi.domain.Loan;
 import nl.kooi.domain.Periodicity;
 import nl.kooi.domain.Timing;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.io.Serializable;
@@ -32,17 +31,5 @@ public class LoanDto implements Serializable {
 
     @NotNull
     public Timing timing;
-
-    public Loan toDomain() {
-
-        return Loan.builder()
-                .initialLoan(initialLoan)
-                .annualInterestPercentage(annualInterestPercentage)
-                .periodicity(periodicity)
-                .startdate(startDate)
-                .months((int) Period.between(startDate, endDate.plusDays(1)).toTotalMonths())
-                .timing(timing)
-                .build();
-    }
 
 }

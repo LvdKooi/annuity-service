@@ -1,4 +1,4 @@
-package nl.kooi.dto;
+package nl.kooi.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

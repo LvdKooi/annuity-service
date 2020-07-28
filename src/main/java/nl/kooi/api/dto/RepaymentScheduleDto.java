@@ -1,4 +1,5 @@
-package nl.kooi.dto;
+package nl.kooi.api.dto;
+
 
 import lombok.Data;
 

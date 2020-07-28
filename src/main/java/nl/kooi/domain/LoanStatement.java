@@ -2,7 +2,6 @@ package nl.kooi.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import nl.kooi.dto.LoanStatementDto;
 import nl.kooi.utils.ActuarialUtils;
 
 import java.math.BigDecimal;
@@ -56,16 +55,6 @@ public class LoanStatement {
         }
 
         throw new IllegalArgumentException("Loan contains invalid loanPeriod.");
-    }
-
-    public LoanStatementDto toDto() {
-        var dto = new LoanStatementDto();
-        dto.period = getPeriodNumber();
-        dto.balance = getBalance().setScale(5, RoundingMode.HALF_UP);
-        dto.totalInterest = getTotalInterest().setScale(5, RoundingMode.HALF_UP);
-        dto.payment = getPayment().toDto();
-        dto.date = getDate();
-        return dto;
     }
 
     private void setBalanceTotalInterestAndPayment() {

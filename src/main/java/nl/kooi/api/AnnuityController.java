@@ -1,13 +1,14 @@
-package nl.kooi.app;
+package nl.kooi.api;
 
 
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import nl.kooi.api.dto.Mapper;
 import nl.kooi.domain.Loan;
 import nl.kooi.domain.Periodicity;
 import nl.kooi.domain.RepaymentSchedule;
 import nl.kooi.domain.Timing;
-import nl.kooi.dto.RepaymentScheduleDto;
+import nl.kooi.api.dto.RepaymentScheduleDto;
 import org.springframework.lang.NonNull;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 
 /**
@@ -50,7 +50,7 @@ public class AnnuityController {
                 .months(months)
                 .build();
 
-        return new RepaymentSchedule(loanObject).toDto();
+        return Mapper.map(new RepaymentSchedule(loanObject));
 
     }
 

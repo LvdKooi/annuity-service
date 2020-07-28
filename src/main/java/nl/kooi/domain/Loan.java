@@ -2,7 +2,6 @@ package nl.kooi.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import nl.kooi.dto.LoanDto;
 import nl.kooi.exception.InvalidDateException;
 import nl.kooi.exception.LoanException;
 import nl.kooi.utils.ActuarialUtils;
@@ -65,19 +64,6 @@ public class Loan {
         endDate = startdate.plusMonths(months).minusDays(1);
         loanTerm = Period.ofMonths(months);
 
-    }
-
-    public LoanDto toDto() {
-        var dto = new LoanDto();
-
-        dto.annualInterestPercentage = this.annualInterestPercentage;
-        dto.initialLoan = this.initialLoan;
-        dto.periodicity = this.periodicity;
-        dto.timing = this.timing;
-        dto.startDate = this.startDate;
-        dto.endDate = this.endDate;
-
-        return dto;
     }
 
     public static class LoanBuilder {

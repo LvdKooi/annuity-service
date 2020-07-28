@@ -1,4 +1,4 @@
-package nl.kooi.app;
+package nl.kooi;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("nl.kooi.app"))
+                .apis(RequestHandlerSelectors.basePackage("nl.kooi.api"))
                 .paths(PathSelectors.any())
                 .build();
     }
