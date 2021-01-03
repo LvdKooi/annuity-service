@@ -13,9 +13,9 @@ import java.time.Period;
 @EqualsAndHashCode
 @Getter
 public class LoanStatement {
-    private final Loan loan;
-    private final int periodNumber;
-    private final int numberOfPayments;
+    private Loan loan;
+    private int periodNumber;
+    private int numberOfPayments;
     private LocalDate date;
     private Payment payment;
     private BigDecimal balance;
@@ -91,7 +91,7 @@ public class LoanStatement {
     private void setDateOfPeriod() {
         var monthsBetweenPaymentDates = 12 / getLoan().getPeriodicity().getDivisor();
 
-        date = getLoan().getTiming() == Timing.IMMEDIATE ? getLoan().getStartDate().withDayOfMonth(1).plusMonths((monthsBetweenPaymentDates * getPeriodNumber())).minusDays(1) : getLoan().getStartDate().withDayOfMonth(1).plusMonths((getPeriodNumber() - 1) * monthsBetweenPaymentDates);
+        date = getLoan().getTiming() == Timing.IMMEDIATE ? getLoan().getStartDate().withDayOfMonth(1).plusMonths(((long) monthsBetweenPaymentDates * getPeriodNumber())).minusDays(1) : getLoan().getStartDate().withDayOfMonth(1).plusMonths((long) (getPeriodNumber() - 1) * monthsBetweenPaymentDates);
 
     }
 }

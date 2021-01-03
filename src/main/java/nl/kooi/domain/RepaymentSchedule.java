@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 public class RepaymentSchedule {
-    private final Loan loan;
+    private Loan loan;
     private List<LoanStatement> loanStatements;
 
     public RepaymentSchedule(Loan loan) {
