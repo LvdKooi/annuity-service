@@ -73,12 +73,12 @@ public class MapperTests {
 
     private LoanDto getLoanDtoExpectation() {
         LoanDto loanDtoExpectation = new LoanDto();
-        loanDtoExpectation.periodicity = SEMI_ANNUALLY;
-        loanDtoExpectation.initialLoan = BigDecimal.valueOf(1000.0).setScale(5, RoundingMode.HALF_UP);
-        loanDtoExpectation.annualInterestPercentage = BigDecimal.ONE.setScale(5, RoundingMode.HALF_UP);
-        loanDtoExpectation.startDate = LocalDate.of(2019, 1, 1);
-        loanDtoExpectation.endDate = LocalDate.of(2019, 12, 31);
-        loanDtoExpectation.timing = IMMEDIATE;
+        loanDtoExpectation.setPeriodicity( SEMI_ANNUALLY);
+        loanDtoExpectation.setInitialLoan( BigDecimal.valueOf(1000.0).setScale(5, RoundingMode.HALF_UP));
+        loanDtoExpectation.setAnnualInterestPercentage(BigDecimal.ONE.setScale(5, RoundingMode.HALF_UP));
+        loanDtoExpectation.setStartDate(LocalDate.of(2019, 1, 1));
+        loanDtoExpectation.setEndDate(LocalDate.of(2019, 12, 31));
+        loanDtoExpectation.setTiming(IMMEDIATE);
 
         return loanDtoExpectation;
     }

@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Data
 public class PaymentDto implements Serializable {
-    public BigDecimal totalPayment;
-    public BigDecimal interestAmount;
-    public BigDecimal repaymentAmount;
+    private BigDecimal totalPayment;
+    private BigDecimal interestAmount;
+    private BigDecimal repaymentAmount;
 }

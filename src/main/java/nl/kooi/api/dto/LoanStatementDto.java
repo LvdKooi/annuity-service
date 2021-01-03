@@ -9,12 +9,12 @@ import java.time.LocalDate;
 
 @Data
 public class LoanStatementDto implements Serializable {
-    public Integer period;
+    private Integer period;
 
     @JsonFormat(pattern="yyyy-MM-dd")
-    public LocalDate date;
-    public PaymentDto payment;
-    public BigDecimal balance;
-    public BigDecimal totalInterest;
+    private LocalDate date;
+    private PaymentDto payment;
+    private BigDecimal balance;
+    private BigDecimal totalInterest;
 
 }

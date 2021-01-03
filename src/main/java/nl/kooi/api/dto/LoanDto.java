@@ -14,20 +14,20 @@ import java.time.LocalDate;
 @Data
 public class LoanDto implements Serializable {
     @Positive
-    public BigDecimal initialLoan;
+    private BigDecimal initialLoan;
     @Positive
-    public BigDecimal annualInterestPercentage;
+    private BigDecimal annualInterestPercentage;
     @NotNull
-    public Periodicity periodicity;
+    private Periodicity periodicity;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     @NotNull
-    public LocalDate startDate;
+    private LocalDate startDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    public LocalDate endDate;
+    private LocalDate endDate;
 
     @NotNull
-    public Timing timing;
+    private Timing timing;
 
 }

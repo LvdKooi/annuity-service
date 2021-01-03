@@ -8,6 +8,6 @@ import java.util.List;
 
 @Data
 public class RepaymentScheduleDto implements Serializable {
-   public LoanDto loan;
-   public List<LoanStatementDto> loanStatements;
+   private LoanDto loan;
+   private List<LoanStatementDto> loanStatements;
 }
