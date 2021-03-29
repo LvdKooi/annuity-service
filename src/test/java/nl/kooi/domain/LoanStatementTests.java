@@ -12,7 +12,7 @@ import java.time.Period;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class LoanStatementTests {
+class LoanStatementTests {
     private Loan.LoanBuilder loanBuilder = Loan.builder();
     private BigDecimal initialLoan = BigDecimal.valueOf(197000);
     private BigDecimal annualInterestPercentage = BigDecimal.valueOf(2.69);

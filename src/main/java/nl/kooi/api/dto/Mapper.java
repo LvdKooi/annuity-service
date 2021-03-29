@@ -28,8 +28,11 @@ public class Mapper {
     }
 
     public static LoanDto map(Loan loan) {
-        return modelMapper.map(loan, LoanDto.class);
+        var mapped = modelMapper.map(loan, LoanDto.class);
+        mapped.setLoanTermInMonths(loan.getLoanTerm().getMonths());
+        return mapped;
     }
+
     public static Loan map(LoanDto loanDto) {
         return Loan.builder()
                 .initialLoan(loanDto.getInitialLoan())
@@ -46,7 +49,9 @@ public class Mapper {
     }
 
     public static RepaymentScheduleDto map(RepaymentSchedule repaymentSchedule) {
-        return modelMapper.map(repaymentSchedule, RepaymentScheduleDto.class);
+        var mapped =  modelMapper.map(repaymentSchedule, RepaymentScheduleDto.class);
+        mapped.setLoan(Mapper.map(repaymentSchedule.getLoan()));
+        return mapped;
     }
 
     public static PaymentDto map(Payment payment) {

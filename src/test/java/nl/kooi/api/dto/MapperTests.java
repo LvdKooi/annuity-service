@@ -17,7 +17,7 @@ import static nl.kooi.domain.Timing.IMMEDIATE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class MapperTests {
+class MapperTests {
 
     @Test
     public void loanToDtoTest() {
@@ -80,6 +80,7 @@ public class MapperTests {
         loanDtoExpectation.setStartDate(LocalDate.of(2019, 1, 1));
         loanDtoExpectation.setEndDate(LocalDate.of(2019, 12, 31));
         loanDtoExpectation.setTiming(IMMEDIATE);
+        loanDtoExpectation.setLoanTermInMonths(12);
 
         return loanDtoExpectation;
     }

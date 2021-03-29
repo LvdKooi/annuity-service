@@ -12,7 +12,7 @@ import java.time.Period;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringJUnitConfig(RepaymentScheduleService.class)
-public class RepaymentScheduleServiceTests {
+class RepaymentScheduleServiceTests {
 
     @Autowired
     private RepaymentScheduleService repaymentScheduleService;

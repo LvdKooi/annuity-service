@@ -8,7 +8,6 @@ import nl.kooi.domain.validation.PeriodMatchesPeriodicity;
 import nl.kooi.utils.ActuarialUtils;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
@@ -38,7 +37,7 @@ public class Loan {
                  Periodicity periodicity,
                  Timing timing,
                  LocalDate startdate,
-                 @Valid Period loanTerm) {
+                 Period loanTerm) {
 
         this.initialLoan = initialLoan;
         this.annualInterestPercentage = annualInterestPercentage;
