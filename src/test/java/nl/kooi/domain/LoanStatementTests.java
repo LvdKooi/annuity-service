@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.Period;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -342,7 +343,7 @@ public class LoanStatementTests {
                 .annualInterestPercentage(annualInterestPercentage)
                 .periodicity(periodicity)
                 .startdate(LocalDate.of(2017, 4, 1))
-                .months(360)
+                .loanTerm(Period.ofMonths(360))
                 .timing(timing)
                 .build();
     }

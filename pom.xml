@@ -7,11 +7,11 @@
     <groupId>nl.kooi</groupId>
     <artifactId>AnnuityService</artifactId>
     <version>1.0-SNAPSHOT</version>
-
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.2.RELEASE</version>
+        <version>2.4.2</version>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <properties>
@@ -24,6 +24,7 @@
         <copy-rename-maven-plugin.version>1.0</copy-rename-maven-plugin.version>
         <swagger.version>2.9.2</swagger.version>
         <modelmapper.version>2.3.0</modelmapper.version>
+        <javax-validation-api.version>2.0.1.Final</javax-validation-api.version>
     </properties>
 
     <dependencies>
@@ -72,6 +73,15 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${javax-validation-api.version}</version>
         </dependency>
     </dependencies>
 

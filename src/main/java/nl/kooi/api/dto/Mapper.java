@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.Period;
 
 public class Mapper {
 
@@ -28,6 +29,16 @@ public class Mapper {
 
     public static LoanDto map(Loan loan) {
         return modelMapper.map(loan, LoanDto.class);
+    }
+    public static Loan map(LoanDto loanDto) {
+        return Loan.builder()
+                .initialLoan(loanDto.getInitialLoan())
+                .annualInterestPercentage(loanDto.getAnnualInterestPercentage())
+                .periodicity(loanDto.getPeriodicity())
+                .timing(loanDto.getTiming())
+                .startdate(loanDto.getStartDate())
+                .loanTerm(Period.ofMonths(loanDto.getLoanTermInMonths()))
+                .build();
     }
 
     public static LoanStatementDto map(LoanStatement loanStatement) {

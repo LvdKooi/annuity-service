@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 import static nl.kooi.domain.Periodicity.SEMI_ANNUALLY;
@@ -35,7 +36,7 @@ public class MapperTests {
 
     @Test
     public void repaymentScheduleToDtoTest() {
-        var repaymentSchedule = new RepaymentSchedule(getLoan());
+        var repaymentSchedule = new RepaymentSchedule(getLoan(), List.of(LoanStatement.of(getLoan(), 1), LoanStatement.of(getLoan(), 2)));
         RepaymentScheduleDto repaymentScheduleDto = Mapper.map(repaymentSchedule);
         assertThat(repaymentScheduleDto.getLoan()).isEqualTo(getLoanDtoExpectation());
         assertThat(repaymentScheduleDto.getLoanStatements().size()).isEqualTo(2);
@@ -64,7 +65,7 @@ public class MapperTests {
         return Loan.builder()
                 .initialLoan(BigDecimal.valueOf(1000.0))
                 .annualInterestPercentage(BigDecimal.ONE)
-                .months(12)
+                .loanTerm(Period.ofMonths(12))
                 .periodicity(SEMI_ANNUALLY)
                 .startdate(LocalDate.parse("2019-01-01"))
                 .timing(IMMEDIATE)
@@ -73,8 +74,8 @@ public class MapperTests {
 
     private LoanDto getLoanDtoExpectation() {
         LoanDto loanDtoExpectation = new LoanDto();
-        loanDtoExpectation.setPeriodicity( SEMI_ANNUALLY);
-        loanDtoExpectation.setInitialLoan( BigDecimal.valueOf(1000.0).setScale(5, RoundingMode.HALF_UP));
+        loanDtoExpectation.setPeriodicity(SEMI_ANNUALLY);
+        loanDtoExpectation.setInitialLoan(BigDecimal.valueOf(1000.0).setScale(5, RoundingMode.HALF_UP));
         loanDtoExpectation.setAnnualInterestPercentage(BigDecimal.ONE.setScale(5, RoundingMode.HALF_UP));
         loanDtoExpectation.setStartDate(LocalDate.of(2019, 1, 1));
         loanDtoExpectation.setEndDate(LocalDate.of(2019, 12, 31));
