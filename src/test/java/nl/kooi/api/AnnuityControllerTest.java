@@ -43,7 +43,10 @@ class AnnuityControllerTest {
     public void initTestDependencies() {
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        mockMvc = MockMvcBuilders.standaloneSetup(annuityController).build();
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(annuityController)
+                .setControllerAdvice(new ControllerExceptionHandler())
+                .build();
     }
 
 
@@ -52,7 +55,6 @@ class AnnuityControllerTest {
         when(repaymentScheduleService.getRepaymentScheduleForLoan(any()))
                 .thenReturn(getRepaymentSchedule());
 
-        System.out.println(objectMapper.writeValueAsString(Mapper.map(getLoan())));
         var mvcResult = mockMvc.perform(post("/annuity/repayment-schedule")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json("{\n" +
@@ -72,6 +74,23 @@ class AnnuityControllerTest {
 
         assertThat(response).isEqualTo(Mapper.map(getRepaymentSchedule()));
 
+    }
+
+    @Test
+    public void getRepaymentScheduleExceptionTest() throws Exception {
+        when(repaymentScheduleService.getRepaymentScheduleForLoan(any())).thenThrow(new RuntimeException());
+
+        var mvcResult = mockMvc.perform(post("/annuity/repayment-schedule")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json("{\n" +
+                        "'annualInterestPercentage': 10,\n" +
+                        "'initialLoan': 100,\n" +
+                        "'loanTermInMonths': 36,\n" +
+                        "'periodicity': 'ANNUALLY',\n" +
+                        "'startDate': '2020-01-01',\n" +
+                        "'timing': 'DUE'\n" +
+                        "}")))
+                .andExpect(status().isBadRequest());
     }
 
     private Loan getLoan() {

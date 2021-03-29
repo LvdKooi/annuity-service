@@ -13,9 +13,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 class LoanStatementTests {
-    private Loan.LoanBuilder loanBuilder = Loan.builder();
-    private BigDecimal initialLoan = BigDecimal.valueOf(197000);
-    private BigDecimal annualInterestPercentage = BigDecimal.valueOf(2.69);
+    private final Loan.LoanBuilder loanBuilder = Loan.builder();
+    private final BigDecimal initialLoan = BigDecimal.valueOf(197000);
+    private final BigDecimal annualInterestPercentage = BigDecimal.valueOf(2.69);
 
     @Test
     public void testFirstPaymentMonthlyImmediate() {

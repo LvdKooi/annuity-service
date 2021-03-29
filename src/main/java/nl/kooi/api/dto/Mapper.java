@@ -15,9 +15,8 @@ import java.time.Period;
 
 public class Mapper {
 
-    private static ModelMapper modelMapper = new ModelMapper();
-
-    private static Converter<BigDecimal, BigDecimal> toScale = new AbstractConverter<BigDecimal, BigDecimal>() {
+    private static final ModelMapper modelMapper = new ModelMapper();
+    private static final Converter<BigDecimal, BigDecimal> toScale = new AbstractConverter<>() {
         protected BigDecimal convert(BigDecimal source) {
             return source == null ? null : source.setScale(5, RoundingMode.HALF_UP);
         }
