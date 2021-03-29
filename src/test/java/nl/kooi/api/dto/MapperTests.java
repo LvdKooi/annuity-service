@@ -24,7 +24,6 @@ class MapperTests {
         LoanDto loanDto = Mapper.map(getLoan());
         LoanDto loanDtoExpectation = getLoanDtoExpectation();
         assertThat(loanDto).isEqualTo(loanDtoExpectation);
-
     }
 
     @Test
@@ -80,8 +79,6 @@ class MapperTests {
         loanDtoExpectation.setStartDate(LocalDate.of(2019, 1, 1));
         loanDtoExpectation.setEndDate(LocalDate.of(2019, 12, 31));
         loanDtoExpectation.setTiming(IMMEDIATE);
-        loanDtoExpectation.setLoanTermInMonths(12);
-
         return loanDtoExpectation;
     }
 }
