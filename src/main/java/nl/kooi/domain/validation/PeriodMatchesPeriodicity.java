@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
         validatedBy = {PeriodMatchesPeriodicityValidator.class}
 )
 public @interface PeriodMatchesPeriodicity {
-    String message() default "The loan term doesn't match the periodicity.";
+    String message() default "The loan term doesn't match the periodicity. Check loanTermInMonths and periodicity.";
 
     Class<?>[] groups() default {};
 

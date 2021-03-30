@@ -50,6 +50,6 @@ class LoanTests {
                 .build();
        var violations = validator.validate(loan);
        assertThat(violations.stream().findFirst()).isNotEmpty();
-       assertThat(violations.stream().findFirst().get().getMessage()).isEqualTo("The loan term doesn't match the periodicity.");
+       assertThat(violations.stream().findFirst().get().getMessage()).isEqualTo("The loan term doesn't match the periodicity. Check loanTermInMonths and periodicity.");
     }
 }

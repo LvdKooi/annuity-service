@@ -9,6 +9,11 @@ public class PeriodMatchesPeriodicityValidator implements ConstraintValidator<Pe
 
     @Override
     public boolean isValid(Loan loan, ConstraintValidatorContext constraintValidatorContext) {
-        return loan.getLoanTerm().getMonths() % (12 / loan.getPeriodicity().getDivisor()) == 0;
+        var loanTerm = loan.getLoanTerm();
+
+        return loanTerm != null &&
+                loan.getPeriodicity() != null &&
+                loanTerm.getMonths() > 0 &&
+                loanTerm.getMonths() % (12 / loan.getPeriodicity().getDivisor()) == 0;
     }
 }
