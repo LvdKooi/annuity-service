@@ -25,6 +25,10 @@
         <swagger.version>2.9.2</swagger.version>
         <modelmapper.version>2.3.0</modelmapper.version>
         <javax-validation-api.version>2.0.1.Final</javax-validation-api.version>
+        <openapi-generator.version>5.1.0</openapi-generator.version>
+        <jackson-databind-nullable.version>0.2.1</jackson-databind-nullable.version>
+        <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
+        <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -87,10 +91,54 @@
             <artifactId>validation-api</artifactId>
             <version>${javax-validation-api.version}</version>
         </dependency>
-    </dependencies>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>${jackson-databind-nullable.version}</version>
+        </dependency>
 
+    </dependencies>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <modelPackage>nl.kooi.api.dto</modelPackage>
+                            <modelNameSuffix>Dto</modelNameSuffix>
+                            <invokerPackage>nl.kooi.api</invokerPackage>
+                            <apiPackage>nl.kooi.api.controller</apiPackage>
+                            <inputSpec>${project.basedir}/src/main/resources/api/api.yaml</inputSpec>
+                            <output>${project.basedir}/generated/openapi/annuity</output>
+                            <importMappings>
+                                Timing=nl.kooi.domain.Timing,
+                                Periodicity=nl.kooi.domain.Periodicity
+                            </importMappings>
+                            <configOptions>
+                                <dateLibrary>java8</dateLibrary>
+                                <useTags>true</useTags>
+                                <interfaceOnly>true</interfaceOnly>
+                                <booleanGetterPrefix>is</booleanGetterPrefix>
+                            </configOptions>
+                            <globalProperties>
+                                <apiTests>false</apiTests>
+                                <modelTests>false</modelTests>
+                            </globalProperties>
+                            <additionalProperties>
+                                <interfaceOnly>true</interfaceOnly>
+                                <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                            </additionalProperties>
+                            <generatorName>spring</generatorName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -109,6 +157,25 @@
                 <version>${maven-surefire-plugin.version}</version>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>${build-helper-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>add-source-generated</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.basedir}/generated/openapi/src/main/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>com.coderplus.maven.plugins</groupId>
                 <artifactId>copy-rename-maven-plugin</artifactId>
                 <version>${copy-rename-maven-plugin.version}</version>
@@ -125,6 +192,17 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>${maven-clean-plugin.version}</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>generated</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
             </plugin>
         </plugins>
     </build>
