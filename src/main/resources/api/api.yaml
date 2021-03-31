@@ -29,7 +29,7 @@ paths:
         content:
           application/json:
             schema:
-              type: LoanDto
+              type: Loan2
       responses:
         '200':
           description:
@@ -56,7 +56,7 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    LoanDto:
+    Loan2:
       type: object
       title: Loan
       description: The loan

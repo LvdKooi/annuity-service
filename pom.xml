@@ -28,6 +28,7 @@
         <openapi-generator.version>5.1.0</openapi-generator.version>
         <jackson-databind-nullable.version>0.2.1</jackson-databind-nullable.version>
         <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
+        <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -109,6 +110,10 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
+                            <modelPackage>nl.kooi.api.dto</modelPackage>
+                            <modelNameSuffix>Dto</modelNameSuffix>
+                            <invokerPackage>nl.kooi.api</invokerPackage>
+                            <apiPackage>nl.kooi.api.controller</apiPackage>
                             <inputSpec>${project.basedir}/src/main/resources/api/api.yaml</inputSpec>
                             <output>${project.basedir}/generated/openapi/annuity</output>
                             <importMappings>
@@ -150,6 +155,25 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>${build-helper-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>add-source-generated</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.basedir}/generated/openapi/src/main/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>com.coderplus.maven.plugins</groupId>
