@@ -17,26 +17,26 @@ security:
   - BearerAuth: [ ]
 
 paths:
-  /annuity/repayment:
+  /repayment-schedule:
     post:
       operationId: getRepaymentSchedule
       summary: Get repayment schedule for a given loan.
-      description: " Get repayment schedule for a given loan."
+      description: "Get repayment schedule for a given loan."
       tags:
-        - Repayment
+        - Annuity
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: Loan2
+              type: Loan
       responses:
         '200':
-          description:
-          headers:
-            location:
+          description: The repayment schedule of the loan
+          content:
+            application/json:
               schema:
-                type: string
+                type: RepaymentSchedule
         '400':
           $ref: '#/components/responses/BadRequest'
         '500':
@@ -56,7 +56,7 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    Loan2:
+    Loan:
       type: object
       title: Loan
       description: The loan
@@ -70,10 +70,10 @@ components:
       properties:
         initialLoan:
           type: number
-          description: Type van het recht
+          description: The initial loan
         annualInterestPercentage:
           type: number
-          description: Type van het recht
+          description: The annual interest percentage
         startDate:
           type: string
           format: date
@@ -89,14 +89,61 @@ components:
           type: Periodicity
         timing:
           type: Timing
+    LoanStatement:
+      type: object
+      title: LoanStatement
+      description: A loan statement
+      properties:
+        period:
+          type: integer
+          description: Period number of the loan statement
+        date:
+          type: string
+          format: date
+          description: The date of the loan statement
+        balance:
+          type: number
+          description: The balance of the loan after payment
+        payment:
+          type: Payment
+        totalInterest:
+          type: number
+          description: Total interest after payment
+    Payment:
+      type: object
+      title: Payment
+      description: A payment
+      properties:
+        totalPayment:
+          type: number
+          description: The total payment
+        interestAmount:
+          type: number
+          description: The interest amount of the payment
+        repaymentAmount:
+          type: number
+          description: The repayment amount of the payment
+    RepaymentSchedule:
+      type: object
+      title: Repayment schedule
+      description: The repayment schedule of the loan
+      properties:
+        loan:
+          type: Loan
+          description: The loan
+        loanStatements:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoanStatement'
+
     ErrorResponse:
       type: object
       title: Error response
-      description: Error response attributen
+      description: Error response attributes
       properties:
         reason:
           type: string
-          description: Foutmelding
+          description: Message
         reference:
           type: string
           format: uuid
