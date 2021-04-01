@@ -8,7 +8,6 @@ import nl.kooi.api.dto.Mapper;
 import nl.kooi.api.dto.RepaymentScheduleDto;
 import nl.kooi.domain.RepaymentScheduleService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -18,7 +17,6 @@ import javax.validation.Valid;
  * Created by Laurens van der Kooi on 10/10/19.
  */
 
-@RequestMapping(path = "/annuity")
 @RestController
 @Slf4j
 @RequiredArgsConstructor
