@@ -10,7 +10,12 @@ import java.util.UUID;
 @ControllerAdvice
 public class ControllerExceptionHandler {
     @ExceptionHandler({RuntimeException.class})
-    public ResponseEntity<ErrorResponseDto> handleValidationException(RuntimeException exception) {
+    public ResponseEntity<ErrorResponseDto> handleRuntimeException(RuntimeException exception) {
         return ResponseEntity.badRequest().body(new ErrorResponseDto().reason(exception.getMessage()).reference(UUID.randomUUID()));
+    }
+
+    @ExceptionHandler(Error.class)
+    public ResponseEntity<ErrorResponseDto> handleError(Error error) {
+        return ResponseEntity.status(500).body(new ErrorResponseDto().reason(error.getMessage()).reference(UUID.randomUUID()));
     }
 }
