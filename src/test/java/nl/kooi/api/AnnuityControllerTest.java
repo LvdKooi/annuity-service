@@ -2,6 +2,7 @@ package nl.kooi.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import nl.kooi.api.dto.ErrorResponseDto;
 import nl.kooi.api.dto.Mapper;
 import nl.kooi.api.dto.RepaymentScheduleDto;
 import nl.kooi.domain.*;
@@ -78,7 +79,7 @@ class AnnuityControllerTest {
 
     @Test
     public void getRepaymentScheduleExceptionTest() throws Exception {
-        when(repaymentScheduleService.getRepaymentScheduleForLoan(any())).thenThrow(new RuntimeException());
+        when(repaymentScheduleService.getRepaymentScheduleForLoan(any())).thenThrow(new RuntimeException("Bad request!"));
 
         var mvcResult = mockMvc.perform(post("/annuity/repayment-schedule")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -90,7 +91,13 @@ class AnnuityControllerTest {
                         "'startDate': '2020-01-01',\n" +
                         "'timing': 'DUE'\n" +
                         "}")))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse();
+
+        var response = objectMapper.readValue(mvcResult.getContentAsString(), ErrorResponseDto.class);
+
+        assertThat(response.getReason()).isEqualTo("Bad request!");
     }
 
     private Loan getLoan() {
