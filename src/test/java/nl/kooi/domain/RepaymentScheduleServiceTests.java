@@ -53,6 +53,10 @@ class RepaymentScheduleServiceTests {
     }
 
     private Loan getLoan(Periodicity periodicity, Timing timing) {
+        return getLoan(RepaymentType.ANNUITY, periodicity, timing);
+    }
+
+    private Loan getLoan(RepaymentType repaymentType, Periodicity periodicity, Timing timing) {
         return loanBuilder
                 .initialLoan(initialLoan)
                 .annualInterestPercentage(annualInterestPercentage)
@@ -60,10 +64,11 @@ class RepaymentScheduleServiceTests {
                 .startdate(LocalDate.of(2020, 1, 1))
                 .loanTerm(Period.ofMonths(12))
                 .timing(timing)
+                .repaymentType(RepaymentType.ANNUITY)
                 .build();
     }
 
-    private Loan.LoanBuilder getBaseLoanBuilder(Periodicity periodicity, Timing timing){
+    private Loan.LoanBuilder getBaseLoanBuilder(Periodicity periodicity, Timing timing) {
 
         return loanBuilder
                 .initialLoan(initialLoan)
@@ -71,6 +76,7 @@ class RepaymentScheduleServiceTests {
                 .periodicity(periodicity)
                 .startdate(LocalDate.of(2020, 1, 1))
                 .loanTerm(Period.ofMonths(12))
+                .repaymentType(RepaymentType.ANNUITY)
                 .timing(timing);
     }
 

@@ -30,6 +30,7 @@ public class Loan {
     private @NotNull Timing timing;
     private LocalDate endDate;
     private @NotNull Period loanTerm;
+    private @NotNull RepaymentType repaymentType;
 
     @Builder
     private Loan(BigDecimal initialLoan,
@@ -37,7 +38,8 @@ public class Loan {
                  Periodicity periodicity,
                  Timing timing,
                  LocalDate startdate,
-                 Period loanTerm) {
+                 Period loanTerm,
+                 RepaymentType repaymentType) {
 
         this.initialLoan = initialLoan;
         this.annualInterestPercentage = annualInterestPercentage;
@@ -47,6 +49,7 @@ public class Loan {
         this.timing = timing;
         this.startDate = startdate;
         this.loanTerm = loanTerm;
+        this.repaymentType = repaymentType;
         setLoanPeriodAndEnddate(startdate, loanTerm);
     }
 

@@ -2,6 +2,7 @@ package nl.kooi.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import nl.kooi.exception.LoanException;
 import nl.kooi.utils.ActuarialUtils;
 
 import java.math.BigDecimal;
@@ -85,7 +86,14 @@ public class LoanStatement {
     }
 
     private BigDecimal getTotalPeriodicPayment() {
-        return getLoan().getInitialLoan().divide(ActuarialUtils.getAnnuity(getLoan().getTiming(), getLoan().getPeriodicInterestRate(), getNumberOfPayments()), 10, RoundingMode.HALF_UP);
+        switch (getLoan().getRepaymentType()) {
+            case ANNUITY:
+                return getLoan().getInitialLoan().divide(ActuarialUtils.getAnnuity(getLoan().getTiming(), getLoan().getPeriodicInterestRate(), getNumberOfPayments()), 10, RoundingMode.HALF_UP);
+            case STRAIGHT_LINE:
+                return getLoan().getInitialLoan().divide(BigDecimal.valueOf(getNumberOfPayments()), 10, RoundingMode.HALF_UP);
+            default:
+                throw new LoanException(String.format("Not existing repayment type: %s", getLoan().getRepaymentType()));
+        }
     }
 
     private void setDateOfPeriod() {

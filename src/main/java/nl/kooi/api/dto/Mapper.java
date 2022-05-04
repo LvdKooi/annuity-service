@@ -1,10 +1,7 @@
 package nl.kooi.api.dto;
 
 
-import nl.kooi.domain.Loan;
-import nl.kooi.domain.LoanStatement;
-import nl.kooi.domain.Payment;
-import nl.kooi.domain.RepaymentSchedule;
+import nl.kooi.domain.*;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -38,6 +35,7 @@ public class Mapper {
                 .timing(loanDto.getTiming())
                 .startdate(loanDto.getStartDate())
                 .loanTerm(Period.ofMonths(loanDto.getLoanTermInMonths()))
+                .repaymentType(loanDto.getRepaymentType())
                 .build();
     }
 

@@ -64,7 +64,8 @@ class AnnuityControllerTest {
                         "'loanTermInMonths': 36,\n" +
                         "'periodicity': 'ANNUALLY',\n" +
                         "'startDate': '2020-01-01',\n" +
-                        "'timing': 'DUE'\n" +
+                        "'timing': 'DUE', \n" +
+                        "'repaymentType': 'ANNUITY'\n" +
                         "}")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -89,7 +90,8 @@ class AnnuityControllerTest {
                         "'loanTermInMonths': 36,\n" +
                         "'periodicity': 'ANNUALLY',\n" +
                         "'startDate': '2020-01-01',\n" +
-                        "'timing': 'DUE'\n" +
+                        "'timing': 'DUE', \n" +
+                        "'repaymentType': 'ANNUITY'\n" +
                         "}")))
                 .andExpect(status().isBadRequest())
                 .andReturn()
@@ -101,6 +103,10 @@ class AnnuityControllerTest {
     }
 
     private Loan getLoan() {
+        return getLoan(RepaymentType.ANNUITY);
+    }
+
+    private Loan getLoan(RepaymentType repaymentType) {
         return Loan.builder()
                 .initialLoan(BigDecimal.TEN)
                 .annualInterestPercentage(BigDecimal.ONE)
@@ -108,6 +114,7 @@ class AnnuityControllerTest {
                 .startdate(LocalDate.of(2021, 4, 1))
                 .loanTerm(Period.ofMonths(12))
                 .timing(Timing.IMMEDIATE)
+                .repaymentType(repaymentType)
                 .build();
     }
 

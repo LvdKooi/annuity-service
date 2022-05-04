@@ -67,6 +67,7 @@ components:
         - startDate
         - timing
         - loanTermInMonths
+        - repaymentType
       properties:
         initialLoan:
           type: number
@@ -89,6 +90,8 @@ components:
           type: Periodicity
         timing:
           type: Timing
+        repaymentType:
+          type: RepaymentType
     LoanStatement:
       type: object
       title: LoanStatement

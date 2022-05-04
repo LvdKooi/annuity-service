@@ -345,6 +345,7 @@ class LoanStatementTests {
                 .startdate(LocalDate.of(2017, 4, 1))
                 .loanTerm(Period.ofMonths(360))
                 .timing(timing)
+                .repaymentType(RepaymentType.ANNUITY)
                 .build();
     }
 

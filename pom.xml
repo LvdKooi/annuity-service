@@ -24,6 +24,7 @@
         <copy-rename-maven-plugin.version>1.0</copy-rename-maven-plugin.version>
         <swagger.version>2.9.2</swagger.version>
         <modelmapper.version>2.3.0</modelmapper.version>
+        <lombok.version>1.18.22</lombok.version>
         <javax-validation-api.version>2.0.1.Final</javax-validation-api.version>
         <openapi-generator.version>5.1.0</openapi-generator.version>
         <jackson-databind-nullable.version>0.2.1</jackson-databind-nullable.version>
@@ -36,6 +37,12 @@
             <groupId>org.modelmapper.extensions</groupId>
             <artifactId>modelmapper-spring</artifactId>
             <version>${modelmapper.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.22</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
@@ -81,6 +88,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -118,7 +126,8 @@
                             <output>${project.basedir}/generated/openapi/annuity</output>
                             <importMappings>
                                 Timing=nl.kooi.domain.Timing,
-                                Periodicity=nl.kooi.domain.Periodicity
+                                Periodicity=nl.kooi.domain.Periodicity,
+                                RepaymentType=nl.kooi.domain.RepaymentType
                             </importMappings>
                             <configOptions>
                                 <dateLibrary>java8</dateLibrary>

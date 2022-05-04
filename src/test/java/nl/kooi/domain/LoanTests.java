@@ -29,6 +29,7 @@ class LoanTests {
                 .periodicity(SEMI_ANNUALLY)
                 .startdate(LocalDate.parse("2019-01-01"))
                 .timing(IMMEDIATE)
+                .repaymentType(RepaymentType.ANNUITY)
                 .build();
 
         assertThat(loan.getEndDate()).isEqualTo(LocalDate.of(2019, 12, 31));
@@ -47,9 +48,10 @@ class LoanTests {
                 .periodicity(SEMI_ANNUALLY)
                 .startdate(LocalDate.parse("2019-01-01"))
                 .timing(IMMEDIATE)
+                .repaymentType(RepaymentType.ANNUITY)
                 .build();
-       var violations = validator.validate(loan);
-       assertThat(violations.stream().findFirst()).isNotEmpty();
-       assertThat(violations.stream().findFirst().get().getMessage()).isEqualTo("The loan term doesn't match the periodicity. Check loanTermInMonths and periodicity.");
+        var violations = validator.validate(loan);
+        assertThat(violations.stream().findFirst()).isNotEmpty();
+        assertThat(violations.stream().findFirst().get().getMessage()).isEqualTo("The loan term doesn't match the periodicity. Check loanTermInMonths and periodicity.");
     }
 }

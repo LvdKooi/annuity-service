@@ -1,9 +1,6 @@
 package nl.kooi.api.dto;
 
-import nl.kooi.domain.Loan;
-import nl.kooi.domain.LoanStatement;
-import nl.kooi.domain.Payment;
-import nl.kooi.domain.RepaymentSchedule;
+import nl.kooi.domain.*;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -68,6 +65,7 @@ class MapperTests {
                 .periodicity(SEMI_ANNUALLY)
                 .startdate(LocalDate.parse("2019-01-01"))
                 .timing(IMMEDIATE)
+                .repaymentType(RepaymentType.ANNUITY)
                 .build();
     }
 
@@ -79,6 +77,7 @@ class MapperTests {
         loanDtoExpectation.setStartDate(LocalDate.of(2019, 1, 1));
         loanDtoExpectation.setEndDate(LocalDate.of(2019, 12, 31));
         loanDtoExpectation.setTiming(IMMEDIATE);
+        loanDtoExpectation.setRepaymentType(RepaymentType.ANNUITY);
         return loanDtoExpectation;
     }
 }
