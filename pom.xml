@@ -22,7 +22,7 @@
         <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <copy-rename-maven-plugin.version>1.0</copy-rename-maven-plugin.version>
-        <swagger.version>2.9.2</swagger.version>
+        <swagger.version>2.10.0</swagger.version>
         <modelmapper.version>2.3.0</modelmapper.version>
         <javax-validation-api.version>2.0.1.Final</javax-validation-api.version>
         <openapi-generator.version>5.1.0</openapi-generator.version>
